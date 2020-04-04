@@ -26,6 +26,11 @@ module.exports = merge(baseWebpackConfig, {
         cache: true,
         parallel: true,
         sourceMap: true,
+        uglifyOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
       }),
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin({
