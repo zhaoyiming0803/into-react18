@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Button, Toast } from "antd-mobile";
 
 function Home() {
   const history = useHistory();
@@ -10,7 +11,15 @@ function Home() {
   return (
     <div>
       <h2>Home</h2>
-      <button onClick={() => handleClick()}>to dashboard</button>
+      <Button type="primary" onClick={() => handleClick()}>
+        to dashboard
+      </Button>
+      <Button
+        type="warning"
+        onClick={() => Toast.info("this is a Toast component")}
+      >
+        show toast
+      </Button>
     </div>
   );
 }

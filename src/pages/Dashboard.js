@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { addArticle } from "@/action";
+import { Button } from "antd-mobile";
 
 function Dashboard(props) {
   const history = useHistory();
@@ -24,7 +25,9 @@ function Dashboard(props) {
       {props.articles.map((article, index) => (
         <div key={index}>{article.title}</div>
       ))}
-      <button onClick={() => setCount(count + 1)}>add article</button>
+      <Button type="primary" onClick={() => setCount(count + 1)}>
+        add article
+      </Button>
     </div>
   );
 }
