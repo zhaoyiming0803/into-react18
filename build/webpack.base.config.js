@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, "../", dir);
@@ -41,9 +41,9 @@ module.exports = {
         minifyURLs: true,
       },
     }),
-    new MiniCssExtractPlugin({
-      filename: "main.css",
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "main.css",
+    // }),
   ],
   module: {
     noParse: /jquery/,
@@ -51,8 +51,15 @@ module.exports = {
       {
         test: /\.less$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
+          // MiniCssExtractPlugin.loader,
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              localIdentName: "[hash:base64:8]",
+            },
+          },
           "postcss-loader",
           "less-loader",
         ],
