@@ -6,10 +6,31 @@ import {
   Link,
   useHistory,
 } from "react-router-dom";
+// import Loadable from "react-loadable";
+import ReactAsyncLoader from "@/components/ReactAsyncLoader";
 
-import Home from "@/pages/Home";
-import About from "@/pages/About";
-import Dashboard from "@/pages/Dashboard";
+// function Loading() {
+//   return <div>Loading</div>;
+// }
+
+// const Home = Loadable({
+//   loader: () => import("@/pages/Home"),
+//   loading: Loading,
+// });
+
+// const About = Loadable({
+//   loader: () => import("@/pages/About"),
+//   loading: Loading,
+// });
+
+// const Dashboard = Loadable({
+//   loader: () => import("@/pages/Dashboard"),
+//   loading: Loading,
+// });
+
+const Home = ReactAsyncLoader(() => import("@/pages/Home"));
+const About = ReactAsyncLoader(() => import("@/pages/About"));
+const Dashboard = ReactAsyncLoader(() => import("@/pages/Dashboard"));
 
 export default function BasicExample() {
   return (
