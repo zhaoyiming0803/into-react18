@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { addArticle } from "@/action";
@@ -8,8 +8,15 @@ function Dashboard(props) {
   const [count, setCount] = useState(0);
 
   function handleClick() {
-    history.push("/home");
+    history.push("/");
   }
+
+  useEffect(() => {
+    count !== 0 &&
+      props.addArticle({
+        title: "test" + count,
+      });
+  }, [count]);
 
   return (
     <div>
@@ -17,16 +24,7 @@ function Dashboard(props) {
       {props.articles.map((article, index) => (
         <div key={index}>{article.title}</div>
       ))}
-      <button
-        onClick={() => {
-          setCount(count + 1);
-          props.addArticle({
-            title: count,
-          });
-        }}
-      >
-        add article
-      </button>
+      <button onClick={() => setCount(count + 1)}>add article</button>
     </div>
   );
 }
