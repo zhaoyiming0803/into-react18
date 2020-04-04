@@ -13,7 +13,7 @@ import Dashboard from "@/pages/Dashboard";
 
 export default function BasicExample() {
   return (
-    <Router>
+    <Router basename="/pure-react-project-with-webpack">
       {/*
           A <Switch> looks through all its children <Route>
           elements and renders the first one whose path

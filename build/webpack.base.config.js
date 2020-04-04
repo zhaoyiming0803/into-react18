@@ -11,6 +11,10 @@ module.exports = {
   output: {
     filename: "[name].[hash].js",
     path: resolve("dist/"),
+    publicPath:
+      process.env.NODE_ENV === "prod"
+        ? "/pure-react-project-with-webpack/"
+        : "/",
   },
   resolve: {
     alias: {
@@ -23,6 +27,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html",
       filename: "index.html",
+      env: process.env.NODE_ENV,
     }),
     new MiniCssExtractPlugin({
       filename: "main.css",

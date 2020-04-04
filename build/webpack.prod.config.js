@@ -12,10 +12,14 @@ function resolve(dir) {
   return path.join(__dirname, "../", dir);
 }
 
-console.log(CleanWebpackPlugin);
-
 module.exports = merge(baseWebpackConfig, {
   mode: "production",
+  externals: {
+    react: "React",
+    "react-dom": "ReactDOM",
+    "react-router-dom": "ReactRouterDOM",
+    "react-redux": "ReactRedux",
+  },
   optimization: {
     minimizer: [
       new UglifyjsPlugin({
@@ -38,7 +42,7 @@ module.exports = merge(baseWebpackConfig, {
     new CopyWebpackPlugin([
       { from: resolve("static"), to: resolve("dist/static-copy") },
     ]),
-    new webpack.BannerPlugin("created 2019/04/29 by zhaoyimig"),
+    new webpack.BannerPlugin("created 2019/04/29 by zhaoyiming"),
     new webpack.DefinePlugin({
       MODE: JSON.stringify("prod"),
     }),
