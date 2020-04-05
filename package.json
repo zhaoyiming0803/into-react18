@@ -9,6 +9,14 @@
   },
   "author": "https://github.com/zymfe",
   "license": "ISC",
+  "keywords": [
+    "react",
+    "react router",
+    "react router dom",
+    "react redux",
+    "TypeScript",
+    "webpack"
+  ],
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
