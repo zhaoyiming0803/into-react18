@@ -6,7 +6,7 @@ interface State {
 
 export default function ReactAsyncLoader(importComponent: Function) {
   class AsyncComponent<P> extends React.Component {
-    state: State;
+    public state: State;
 
     constructor(props: P) {
       super(props);
@@ -15,15 +15,16 @@ export default function ReactAsyncLoader(importComponent: Function) {
       };
     }
 
-    async componentDidMount() {
+    public async componentDidMount() {
       const { default: component } = await importComponent();
       this.setState({
         component: component,
       });
     }
 
-    render() {
+    public render() {
       const C: typeof React.Component = this.state.component;
+      // tslint:disable-next-line: strict-boolean-expressions
       return C ? <C {...this.props} /> : null;
     }
   }

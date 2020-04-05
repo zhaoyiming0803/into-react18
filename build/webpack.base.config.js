@@ -104,18 +104,24 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        loader: "awesome-typescript-loader",
-        options: {
-          getCustomTransformers: () => ({
-            before: [
-              tsImportPluginFactory({
-                libraryName: "antd-mobile",
-                libraryDirectory: "es",
-                style: "css",
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "awesome-typescript-loader",
+            options: {
+              getCustomTransformers: () => ({
+                before: [
+                  tsImportPluginFactory({
+                    libraryName: "antd-mobile",
+                    libraryDirectory: "es",
+                    style: "css",
+                  }),
+                ],
               }),
-            ],
-          }),
-        },
+            },
+          },
+          "tslint-loader",
+        ],
       },
     ],
   },
