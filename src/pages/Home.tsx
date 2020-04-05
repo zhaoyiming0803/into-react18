@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useState, Dispatch } from "react";
-import { connect, DispatchProp } from "react-redux";
-import { User } from "@/types/user";
+import { useHistory } from "react-router";
+import { connect } from "react-redux";
+import { User } from "@/types/index";
 import { RootState } from "@/reducer/index";
 import { addUser } from "@/action/index";
 
@@ -13,6 +14,7 @@ interface Props {
 function Home<T extends Props>(props: T) {
   console.log(props);
   const [count, setCount] = useState(0);
+  const hisgory = useHistory();
 
   return (
     <div>
@@ -29,6 +31,9 @@ function Home<T extends Props>(props: T) {
         }}
       >
         add user
+      </button>
+      <button onClick={() => hisgory.push("/coupon?a=1&b=2")}>
+        to Coupon page
       </button>
     </div>
   );
