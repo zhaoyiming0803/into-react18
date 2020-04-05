@@ -4,7 +4,7 @@
   "description": "A pure react project with webpack，code splitting, css modules, antd-mobile, without any cli",
   "main": "index.tsx",
   "scripts": {
-    "dev": "NODE_ENV=dev webpack-dev-server --config build/webpack.dev.config.js",
+    "dev": "NODE_ENV=dev webpack-dev-server --progress --color --config build/webpack.dev.config.js",
     "build": "NODE_ENV=prod webpack --config build/webpack.prod.config.js"
   },
   "author": "https://github.com/zymfe",
@@ -70,7 +70,7 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
-    "webpack-dev-server": "^3.3.1",
+    "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {

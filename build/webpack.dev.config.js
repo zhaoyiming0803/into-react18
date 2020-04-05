@@ -12,13 +12,16 @@ module.exports = merge(baseWebpackConfig, {
   mode: "development",
   devServer: {
     host: "127.0.0.1",
-    inline: false,
+    inline: false, // 启用热更新
     port: 8080,
     progress: true,
     contentBase: resolve("./"),
     compress: true,
     disableHostCheck: true,
     historyApiFallback: true,
+    hot: true,
+    open: true,
+    openPage: "../",
   },
   plugins: [
     new webpack.DefinePlugin({
