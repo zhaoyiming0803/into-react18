@@ -10,6 +10,9 @@ import ReactAsyncLoader from "@/components/ReactAsyncLoader";
 
 const Home = ReactAsyncLoader(() => import("../pages/Home"));
 const Coupon = ReactAsyncLoader(() => import("../pages/Coupon"));
+const SetTimeoutDemo = ReactAsyncLoader(() =>
+  import("../pages/SetTimeoutDemo")
+);
 
 export default function RouterComponent() {
   return (
@@ -27,6 +30,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/coupon">
           <Coupon />
+        </Route>
+        <Route exact path="/setTimeoutDemo">
+          <SetTimeoutDemo />
         </Route>
       </Switch>
     </Router>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { CouponForm } from "@/types/index";
 import CouponItem from "@/components/CouponItem";
@@ -50,6 +50,47 @@ function Coupon<T extends Props>(props: T) {
   console.log("history: ", history);
 
   const [coupon, setCoupon] = useState(couponForm);
+  const [count, setCount] = useState(0);
+  const timerRef = useRef(null);
+  console.log("timerRef:", timerRef);
+
+  (function startTimer() {
+    timerRef.current = setTimeout(() => {
+      setCount(count + 1);
+      setCoupon({
+        ...coupon,
+        title: count + "",
+      });
+    }, 2000);
+  })();
+
+  // The function passed to useEffect will run after the render is committed to the screen.
+  // Think of effects as an escape hatch from React’s purely functional world into the imperative world.
+  useEffect(() => {
+    console.log("useEffect");
+
+    // let timer = setTimeout(() => {
+    //   setCount(count + 1);
+    //   setCoupon({
+    //     ...coupon,
+    //     title: count + "",
+    //   });
+    // }, 2000);
+
+    return () => clearTimeout(timerRef.current);
+  });
+
+  // useCallback(() => {
+  //   setTimeout(() => {
+  //     setCount(count + 1);
+  //     setCoupon({
+  //       ...coupon,
+  //       title: count + "",
+  //     });
+  //   }, 2000);
+  // }, []);
+
+  console.log("coupon render");
 
   return (
     <div>
