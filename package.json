@@ -2,7 +2,7 @@
   "name": "pure-react-project-with-webpack",
   "version": "1.0.0",
   "description": "A pure react project with webpack，code splitting, css modules, antd-mobile, without any cli",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "dev": "NODE_ENV=dev webpack-dev-server --config build/webpack.dev.config.js",
     "build": "NODE_ENV=prod webpack --config build/webpack.prod.config.js"
