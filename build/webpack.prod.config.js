@@ -12,6 +12,8 @@ function resolve(dir) {
   return path.join(__dirname, "../", dir);
 }
 
+const date = new Date();
+
 module.exports = merge(baseWebpackConfig, {
   mode: "production",
   externals: {
@@ -19,6 +21,7 @@ module.exports = merge(baseWebpackConfig, {
     "react-dom": "ReactDOM",
     "react-router-dom": "ReactRouterDOM",
     "react-redux": "ReactRedux",
+    // axios: "Axios",
   },
   optimization: {
     minimizer: [
@@ -47,7 +50,11 @@ module.exports = merge(baseWebpackConfig, {
     new CopyWebpackPlugin([
       { from: resolve("static"), to: resolve("dist/static-copy") },
     ]),
-    new webpack.BannerPlugin("created 2019/04/29 by zhaoyiming"),
+    new webpack.BannerPlugin(
+      `created ${date.getFullYear()}/${
+        date.getMonth() + 1
+      }/${date.getDate()} by zhaoyiming`
+    ),
     new webpack.DefinePlugin({
       MODE: JSON.stringify("prod"),
     }),

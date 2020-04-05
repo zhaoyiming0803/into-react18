@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const tsImportPluginFactory = require("ts-import-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, "../", dir);
@@ -83,8 +84,7 @@ module.exports = {
           },
         ],
       },
-      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+      // { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -97,11 +97,25 @@ module.exports = {
                 "@babel/plugin-proposal-class-properties",
                 "@babel/plugin-syntax-dynamic-import",
                 "@babel/plugin-transform-runtime",
-                ["import", { libraryName: "antd-mobile", style: "css" }],
               ],
             },
           },
         ],
+      },
+      {
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader",
+        options: {
+          getCustomTransformers: () => ({
+            before: [
+              tsImportPluginFactory({
+                libraryName: "antd-mobile",
+                libraryDirectory: "es",
+                style: "css",
+              }),
+            ],
+          }),
+        },
       },
     ],
   },

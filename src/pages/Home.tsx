@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState, Dispatch } from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { User } from "@/types/index";
 import { RootState } from "@/reducer/index";
 import { addUser } from "@/action/index";
+import { Button } from "antd-mobile";
 
 interface Props {
   userList: User[];
@@ -22,7 +23,7 @@ function Home<T extends Props>(props: T) {
       {props.userList.map((user: User, index: number) => (
         <div key={index}>{user.name}</div>
       ))}
-      <button
+      <Button
         onClick={() => {
           setCount(count + 1);
           props.addUser({
@@ -31,10 +32,10 @@ function Home<T extends Props>(props: T) {
         }}
       >
         add user
-      </button>
-      <button onClick={() => hisgory.push("/coupon?a=1&b=2")}>
+      </Button>
+      <Button onClick={() => hisgory.push("/coupon?a=1&b=2")}>
         to Coupon page
-      </button>
+      </Button>
     </div>
   );
 }
