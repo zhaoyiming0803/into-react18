@@ -1,8 +1,14 @@
-import React from "react";
+import * as React from "react";
 
-export default function ReactAsyncLoader(importComponent) {
-  class AsyncComponent extends React.Component {
-    constructor(props) {
+interface State {
+  component: null | typeof React.Component;
+}
+
+export default function ReactAsyncLoader(importComponent: Function) {
+  class AsyncComponent<P> extends React.Component {
+    state: State;
+
+    constructor(props: P) {
       super(props);
       this.state = {
         component: null,
@@ -17,9 +23,10 @@ export default function ReactAsyncLoader(importComponent) {
     }
 
     render() {
-      const C = this.state.component;
+      const C: typeof React.Component = this.state.component;
       return C ? <C {...this.props} /> : null;
     }
   }
+
   return AsyncComponent;
 }

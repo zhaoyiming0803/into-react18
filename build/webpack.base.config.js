@@ -7,7 +7,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  entry: resolve("index.js"),
+  entry: resolve("index.tsx"),
   output: {
     filename: "[name].[hash].js",
     path: resolve("dist/"),
@@ -21,7 +21,7 @@ module.exports = {
       "@": resolve("src"),
       static: resolve("static"),
     },
-    extensions: [".js", ".jsx", ".css"],
+    extensions: [".js", ".jsx", ".css", ".less", ".ts", ".tsx", ".json"],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -83,6 +83,8 @@ module.exports = {
           },
         ],
       },
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
