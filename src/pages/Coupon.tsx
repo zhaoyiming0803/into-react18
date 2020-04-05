@@ -1,11 +1,13 @@
 import * as React from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 interface Props {}
 
 function Coupon<T extends Props>(props: T) {
   const history = useHistory();
-  console.log(history.location);
+  // console.log(history);
+  console.log("history: ", history);
+
   return (
     <div>
       <h1>Coupon page</h1>
