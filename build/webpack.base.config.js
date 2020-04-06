@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const tsImportPluginFactory = require("ts-import-plugin");
+const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, "../", dir);
@@ -41,7 +42,9 @@ module.exports = {
         minifyJS: true,
         minifyURLs: true,
       },
+      inlineSource: ".(main).*.(js)",
     }),
+    new HtmlWebpackInlineSourcePlugin(),
     // new MiniCssExtractPlugin({
     //   filename: "main.css",
     // }),

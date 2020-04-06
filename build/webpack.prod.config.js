@@ -21,7 +21,7 @@ module.exports = merge(baseWebpackConfig, {
     "react-dom": "ReactDOM",
     "react-router-dom": "ReactRouterDOM",
     "react-redux": "ReactRedux",
-    // axios: "Axios",
+    // axios: "axios",
   },
   optimization: {
     minimizer: [
