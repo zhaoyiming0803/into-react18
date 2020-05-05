@@ -13,6 +13,9 @@ const Coupon = ReactAsyncLoader(() => import("../pages/Coupon"));
 const SetTimeoutDemo = ReactAsyncLoader(() =>
   import("../pages/SetTimeoutDemo")
 );
+const HandleValueByHooks = ReactAsyncLoader(() =>
+  import("../pages/HandleValueByHooks")
+);
 
 export default function RouterComponent() {
   return (
@@ -33,6 +36,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/setTimeoutDemo">
           <SetTimeoutDemo />
+        </Route>
+        <Route exact path="/handleValueByHooks">
+          <HandleValueByHooks></HandleValueByHooks>
         </Route>
       </Switch>
     </Router>

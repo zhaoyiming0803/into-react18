@@ -36,6 +36,9 @@ function Home<T extends Props>(props: T) {
       <Button onClick={() => hisgory.push("/coupon?a=1&b=2")}>
         to Coupon page
       </Button>
+      <Button onClick={() => hisgory.push("/handleValueByHooks")}>
+        to handle value by hooks page
+      </Button>
     </div>
   );
 }
