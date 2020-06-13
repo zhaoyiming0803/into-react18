@@ -10,6 +10,6 @@ updating...
 
 ### other projects about React
 
-[react-project-with-umi](https://github.com/zymfe/react-project-with-umi)
+[react-project-with-umi](https://github.com/zhaoyiming0803/react-project-with-umi)
 
-[ReactNativeApp](https://github.com/zymfe/ReactNativeApp)
+[ReactNativeApp](https://github.com/zhaoyiming0803/ReactNativeApp)
