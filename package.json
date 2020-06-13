@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=dev webpack-dev-server --progress --color --config build/webpack.dev.config.js",
     "build": "NODE_ENV=prod webpack --config build/webpack.prod.config.js"
   },
-  "author": "https://github.com/zymfe",
+  "author": "https://github.com/zhaoyiming0803",
   "license": "ISC",
   "keywords": [
     "react",
