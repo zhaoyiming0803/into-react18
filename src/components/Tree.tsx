@@ -27,10 +27,12 @@ export default function Tree<T extends Props> (props: T) {
     <div>
       <div style={{marginLeft: 20 * cityData.level + 'px'}}>
         <input type="text" value={ cityData.name } onChange={e => {
+          // 受控组件，同步修改 input 框中的值
           setCityName({
             ...cityData,
             name: e.target.value
           })
+          // 在父组件中修改 value
           props.onChange(path, e.target.value)
         }} />
       </div>
