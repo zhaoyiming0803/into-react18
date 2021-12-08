@@ -73,6 +73,9 @@ function Home<T extends Props>(props: T) {
       <Button onClick={() => hisgory.push("/handleValueByHooks")}>
         to handle value by hooks page
       </Button>
+      <Button onClick={() => hisgory.push("/test-authing-guard")}>
+        to test Authging Guard page
+      </Button>
       <div>
         {citys.map((city, index) => <Tree citys={citys} cityData={city} key={index} index={index} path={[]} setCitys={setCitys} onChange={(path: number[], value: string) => {
           const _citys = deepCopy(citys)
