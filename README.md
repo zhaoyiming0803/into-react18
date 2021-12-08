@@ -2,7 +2,7 @@
 
 updating...
 
-[Preview online](https://web.0351zhuangxiu.com/pure-react-project-with-webpack/)
+[Preview online](http://114.115.212.253/pure-react-project-with-webpack/)
 
 `development: npm run dev`
 
