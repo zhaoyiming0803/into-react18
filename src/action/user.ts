@@ -1,7 +1,7 @@
 import { ADD_USER } from "./actionType";
-import { User } from "@/types/user";
+import { IUser } from "@/types/user";
 
-export const addUser = (payload: User) => {
+export const addUser = (payload: IUser) => {
   return {
     type: ADD_USER,
     payload,

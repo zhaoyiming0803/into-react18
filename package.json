@@ -4,6 +4,7 @@
   "description": "A pure react project with webpack，code splitting, css modules, antd-mobile, without any cli",
   "main": "index.tsx",
   "scripts": {
+    "server": "node src/server/index.js",
     "dev": "NODE_ENV=dev webpack-dev-server --progress --color --config build/webpack.dev.config.js",
     "build": "NODE_ENV=prod webpack --config build/webpack.prod.config.js"
   },
@@ -31,7 +32,7 @@
     "antd-mobile": "^2.3.1",
     "autoprefixer": "^9.5.1",
     "awesome-typescript-loader": "^5.2.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "babel-loader": "^8.1.0",
     "babel-plugin-import": "^1.12.0",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -47,6 +48,9 @@
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^3.2.0",
     "install": "^0.13.0",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.1.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.6.0",
@@ -78,6 +82,8 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5"
+    "@babel/runtime": "^7.4.5",
+    "@types/lodash": "^4.14.178",
+    "lodash": "^4.17.21"
   }
 }

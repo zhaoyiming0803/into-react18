@@ -1,8 +1,8 @@
 import { ADD_USER } from "../action/actionType";
-import { User } from "@/types/user";
+import { IUser } from "@/types/user";
 
 interface State {
-  userList: User[];
+  userList: IUser[];
 }
 
 const initialState: State = {
@@ -15,7 +15,7 @@ const initialState: State = {
 
 interface Action {
   type: string;
-  payload: User;
+  payload: IUser;
 }
 
 export const user = (state: State = initialState, action: Action) => {
