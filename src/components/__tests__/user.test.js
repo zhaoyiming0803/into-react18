@@ -55,7 +55,7 @@ describe('test User component', () => {
         container
       )
     })
-    const user = document.querySelector(['.user'])
+    const user = document.querySelector('.user')
     expect(user.innerHTML).toBe('zhangsan')
   })
 })
