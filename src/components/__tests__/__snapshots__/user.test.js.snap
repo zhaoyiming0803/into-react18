@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test User component render successfully 1`] = `
+Array [
+  <div
+    className="user"
+  >
+    zhangsan
+  </div>,
+  <a
+    aria-disabled={false}
+    className="am-button add-user"
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    onMouseLeave={[Function]}
+    onMouseUp={[Function]}
+    onTouchCancel={[Function]}
+    onTouchEnd={[Function]}
+    onTouchMove={[Function]}
+    onTouchStart={[Function]}
+    role="button"
+  >
+    <span>
+      add user
+    </span>
+  </a>,
+]
+`;

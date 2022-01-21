@@ -3,7 +3,7 @@ import { Dispatch } from 'react'
 import { connect } from 'react-redux'
 
 import { RootState } from '@/reducer/index'
-import { addUser } from '@/action/index'
+import { addUser } from '../action/index'
 
 import { Button } from 'antd-mobile'
 import { IUser } from '@/types/index'
@@ -19,14 +19,13 @@ function User<T extends IProps> (props: T) {
       name: 'user' + Math.random()
     })
   }
-
   return <>
     {
       props.userList.map((user: IUser, index: number) => (
-        <div key={index}>{user.name}</div>
+        <div key={index} className="user">{user.name}</div>
       ))
     }
-    <Button onClick={() => addUser()}>add user</Button>
+    <Button onClick={() => addUser()} className='add-user'>add user</Button>
   </>
 }
 
