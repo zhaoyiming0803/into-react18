@@ -8,8 +8,10 @@
     "dev": "NODE_ENV=dev webpack-dev-server --progress --color --config build/webpack.dev.config.js",
     "build": "NODE_ENV=prod webpack --config build/webpack.prod.config.js",
     "test": "jest",
-    "updateSnapshot": "jest --updateSnapshot"
+    "updateSnapshot": "jest --updateSnapshot",
+    "precommit": "echo \"你好\""
   },
+  "pre-commit": "precommit",
   "author": "https://github.com/zhaoyiming0803",
   "license": "ISC",
   "keywords": [
@@ -71,6 +73,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-px-to-viewport": "^1.1.0",
+    "pre-commit": "^1.2.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-loadable": "^5.5.0",
