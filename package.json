@@ -9,7 +9,7 @@
     "build": "NODE_ENV=prod webpack --config build/webpack.prod.config.js",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot",
-    "precommit": "echo \"你好\""
+    "precommit": "echo \"你好啊\""
   },
   "pre-commit": "precommit",
   "author": "https://github.com/zhaoyiming0803",
