@@ -7,7 +7,8 @@ export default {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   testMatch: [
-    "**/__tests__/**/user.test.js"
+    "**/__tests__/**/user.test.js",
+    "**/__tests__/**/e2e.test.js",
   ],
   collectCoverage: true,
   coverageDirectory: 'coverage',

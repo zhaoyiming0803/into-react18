@@ -54,8 +54,8 @@ export default class CouponItem extends React.Component<Props> {
     return (
       <React.Fragment>
         <div>{this.props.coupon.couponPrice}</div>
-        <div>state.b: {this.state.b}</div>
-        <button onClick={() => this.onChangeB()}>change state.b</button>
+        <div>state.b: <span className="state-b">{this.state.b}</span></div>
+        <button onClick={() => this.onChangeB()} className="change-state">change state.b</button>
       </React.Fragment>
     );
   }

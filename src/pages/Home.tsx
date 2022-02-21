@@ -14,7 +14,7 @@ function Home () {
 
       <User></User>
       
-      <Button onClick={() => hisgory.push('/coupon?a=1&b=2')}>
+      <Button onClick={() => hisgory.push('/coupon?a=1&b=2')}  className="gotoCouponPage">
         to Coupon page
       </Button>
 
