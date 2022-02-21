@@ -25,4 +25,7 @@ export default {
   // moduleNameMapper: {
   //   "/^@/": '<rootDir>/src'
   // }
+  setupFiles: [
+    './tests/setup.js'
+  ]
 }

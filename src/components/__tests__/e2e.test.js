@@ -6,7 +6,7 @@ describe('e2e user', () => {
   test('readyGo', async () => {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
-    await page.goto('http://127.0.0.1:8080/')
+    await page.goto(global.devHost)
 
     let userCount = 1
     const addUserButton = await page.$('.add-user')
@@ -16,7 +16,7 @@ describe('e2e user', () => {
     })
     expect(newUserCount).toBe(userCount + 1)
 
-    await page.goto('http://127.0.0.1:8080/pure-react-project-with-webpack/coupon?a=1&b=2')
+    await page.goto(global.devHost + '/pure-react-project-with-webpack/coupon?a=1&b=2')
     const stateBContent = await page.evaluate(() => {
       return document.querySelector('.state-b').innerText
     })
