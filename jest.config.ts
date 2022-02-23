@@ -3,13 +3,23 @@
  * https://jestjs.io/docs/configuration
  */
 
+type ITestType = 'test:unit' | 'test:e2e'
+
+const testTypeMap = {
+  'test:unit': '.unit.test.js',
+  'test:e2e': '.e2e.test.js'
+}
+
+const testType = process.env.npm_lifecycle_event as ITestType
+const testMatch = [
+  "**/__tests__/**/user.unit.test.js",
+  "**/__tests__/**/user.e2e.test.js"
+].filter(item => item.indexOf(testTypeMap[testType]) > -1)
+
 export default {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  testMatch: [
-    "**/__tests__/**/user.test.js",
-    "**/__tests__/**/e2e.test.js",
-  ],
+  testMatch,
   collectCoverage: true,
   coverageDirectory: 'coverage',
   collectCoverageFrom: [

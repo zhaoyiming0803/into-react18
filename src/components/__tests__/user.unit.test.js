@@ -1,3 +1,5 @@
+// https://reactjs.org/docs/test-utils.html
+
 import React from 'react'
 import renderer from 'react-test-renderer'
 import { render, unmountComponentAtNode } from 'react-dom'
@@ -32,7 +34,7 @@ describe('test User component', () => {
   afterEach(() => {
     // cleanup on exiting
     unmountComponentAtNode(container)
-    container.remove()
+    document.body.removeChild(container)
     container = null
   })
 
