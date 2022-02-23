@@ -26,5 +26,8 @@ describe('e2e user', () => {
       return document.querySelector('.state-b').innerText
     })
     expect(+newStateBContent).toBe(+stateBContent + 1)
+
+    await page.close()
+    await browser.close()
   })
 })
