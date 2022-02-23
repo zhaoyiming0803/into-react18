@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-type ITestType = 'test:unit' | 'test:e2e'
+type ITestType = 'test:unit' | 'test:e2e' | 'updateSnapshot'
 
 const testTypeMap = {
   'test:unit': {
