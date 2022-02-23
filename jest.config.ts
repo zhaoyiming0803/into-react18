@@ -10,6 +10,10 @@ const testTypeMap = {
     subfix: '.unit.test.js',
     preset: 'ts-jest'
   },
+  updateSnapshot: {
+    subfix: '.unit.test.js',
+    preset: 'ts-jest'
+  },
   'test:e2e': {
     subfix: '.e2e.test.js',
     preset: 'jest-puppeteer'
