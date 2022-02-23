@@ -6,18 +6,25 @@
 type ITestType = 'test:unit' | 'test:e2e'
 
 const testTypeMap = {
-  'test:unit': '.unit.test.js',
-  'test:e2e': '.e2e.test.js'
+  'test:unit': {
+    subfix: '.unit.test.js',
+    preset: 'ts-jest'
+  },
+  'test:e2e': {
+    subfix: '.e2e.test.js',
+    preset: 'jest-puppeteer'
+  }
 }
 
 const testType = process.env.npm_lifecycle_event as ITestType
+
 const testMatch = [
   "**/__tests__/**/user.unit.test.js",
   "**/__tests__/**/user.e2e.test.js"
-].filter(item => item.indexOf(testTypeMap[testType]) > -1)
+].filter(item => item.indexOf(testTypeMap[testType].subfix) > -1)
 
 export default {
-  preset: 'ts-jest',
+  preset: testTypeMap[testType].preset,
   testEnvironment: 'jsdom',
   testMatch,
   collectCoverage: true,
