@@ -9,8 +9,9 @@ import { Button } from 'antd-mobile'
 import { IUser } from '@/types/index'
 
 interface IProps {
-  userList: IUser[];
-  addUser: (user: IUser) => void;
+  count: number
+  userList: IUser[]
+  addUser: (user: IUser) => void
 }
 
 function User<T extends IProps> (props: T) {
