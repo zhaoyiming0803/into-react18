@@ -87,7 +87,7 @@ function FormComponent () {
   return <>
     <form>
       <div>
-        <input type="text" value={value} onChange />
+        {/* <input type="text" value={value} /> */}
         <select value={value} onChange={onChangeOptions}>
           <option value="A">A</option>
           <option value="B">B</option>

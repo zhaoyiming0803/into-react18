@@ -45,7 +45,19 @@ export default class CouponItem extends React.Component<Props> {
     return state;
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({
+      a: 10
+    })
+    console.log('this.state.a in componentDidMount: ', this.state.a) // 1
+
+    setTimeout(() => {
+      this.setState({
+        a: 100
+      })
+      console.log('this.state.a in setTimeout: ', this.state.a) // 100
+    })
+  }
 
   componentWillUnmount() {}
 
