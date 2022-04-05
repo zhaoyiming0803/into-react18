@@ -6,6 +6,15 @@ import store from "@/store";
 
 const root = createRoot(document.getElementById("root"))
 
-root.render(<Provider store={store}>
-  <App />
-</Provider>)
+console.log('root: ', root)
+
+console.log('root.render: ', root.render)
+console.log('root.unmount: ', root.unmount)
+
+// root.render(
+//   <Provider store={store}>
+//     <App />
+//   </Provider>
+// )
+
+root.render(<div>Test App</div>)
