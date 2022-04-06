@@ -16,6 +16,7 @@ const SetTimeoutDemo = ReactAsyncLoader(() =>
 const HandleValueByHooks = ReactAsyncLoader(() =>
   import("../pages/HandleValueByHooks")
 );
+const TestFuncComponent = ReactAsyncLoader(() => import('../pages/TestFuncComponent'))
 
 export default function RouterComponent() {
   return (
@@ -39,6 +40,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/handleValueByHooks">
           <HandleValueByHooks></HandleValueByHooks>
+        </Route>
+        <Route exact path="/testFuncComponent">
+          <TestFuncComponent></TestFuncComponent>
         </Route>
       </Switch>
     </Router>

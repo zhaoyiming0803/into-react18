@@ -4,10 +4,9 @@ import { useHistory } from 'react-router-dom'
 import { Button } from 'antd-mobile'
 import User from '../components/User'
 import City from '../components/City'
-import TestFuncComponent from '@/components/TestFuncComponent'
 
 function Home () {
-  const hisgory = useHistory()
+  const history = useHistory()
   
   return (
     <div>
@@ -15,17 +14,17 @@ function Home () {
 
       <User count={1}></User>
       
-      <Button onClick={() => hisgory.push('/coupon?a=1&b=2')}  className="gotoCouponPage">
+      <Button onClick={() => history.push('/coupon?a=1&b=2')}  className="gotoCouponPage">
         to Coupon page
       </Button>
 
-      <Button onClick={() => hisgory.push('/handleValueByHooks')}>
+      <Button onClick={() => history.push('/handleValueByHooks')}>
         to handle value by hooks page
       </Button>
 
-      <City></City>
+      <Button onClick={() => history.push('/testFuncComponent')}>to TestFuncComponent page</Button>
 
-      <TestFuncComponent user={{name: 'zhaoyiming', age: 18}}></TestFuncComponent>
+      <City></City>
     </div>
   )
 }
