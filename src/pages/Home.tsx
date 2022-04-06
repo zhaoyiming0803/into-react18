@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom'
 import { Button } from 'antd-mobile'
 import User from '../components/User'
 import City from '../components/City'
-import TestFuncComponent from '@/components/TestFuncComponent'
 
 function Home () {
   const history = useHistory()
@@ -25,9 +24,9 @@ function Home () {
 
       <Button onClick={() => history.push('/testReact18')}>to Test18 page</Button>
 
-      <City></City>
+      <Button onClick={() => history.push('/testFuncComponent')}>to TestFuncComponent page</Button>
 
-      <TestFuncComponent user={{name: 'zhaoyiming', age: 18}}></TestFuncComponent>
+      <City></City>
     </div>
   )
 }

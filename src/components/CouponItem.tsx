@@ -46,16 +46,24 @@ export default class CouponItem extends React.Component<Props> {
   }
 
   componentDidMount() {
+    // this.setState 在受控模式下是异步
     this.setState({
       a: 10
     })
+    this.setState({
+      a: 11
+    })
     console.log('this.state.a in componentDidMount: ', this.state.a) // 1
 
+    // this.setState 在非受控模式下是同步
     setTimeout(() => {
       this.setState({
         a: 100
       })
-      console.log('this.state.a in setTimeout: ', this.state.a) // 100
+      this.setState({
+        a: 101
+      })
+      console.log('this.state.a in setTimeout: ', this.state.a) // 101
     })
   }
 
@@ -66,6 +74,7 @@ export default class CouponItem extends React.Component<Props> {
     return (
       <React.Fragment>
         <div>{this.props.coupon.couponPrice}</div>
+        <div>state.a: {this.state.a}</div>
         <div>state.b: <span className="state-b">{this.state.b}</span></div>
         <button onClick={() => this.onChangeB()} className="change-state">change state.b</button>
       </React.Fragment>
