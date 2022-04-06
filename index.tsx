@@ -17,4 +17,10 @@ console.log('root.unmount: ', root.unmount)
 //   </Provider>
 // )
 
-root.render(<div>Test App</div>)
+// root.render(<div>Test App</div>)
+
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+)

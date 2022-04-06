@@ -7,7 +7,7 @@ import City from '../components/City'
 import TestFuncComponent from '@/components/TestFuncComponent'
 
 function Home () {
-  const hisgory = useHistory()
+  const history = useHistory()
   
   return (
     <div>
@@ -15,13 +15,15 @@ function Home () {
 
       <User count={1}></User>
       
-      <Button onClick={() => hisgory.push('/coupon?a=1&b=2')}  className="gotoCouponPage">
+      <Button onClick={() => history.push('/coupon?a=1&b=2')}  className="gotoCouponPage">
         to Coupon page
       </Button>
 
-      <Button onClick={() => hisgory.push('/handleValueByHooks')}>
+      <Button onClick={() => history.push('/handleValueByHooks')}>
         to handle value by hooks page
       </Button>
+
+      <Button onClick={() => history.push('/testReact18')}>to Test18 page</Button>
 
       <City></City>
 

@@ -17,6 +17,8 @@ const HandleValueByHooks = ReactAsyncLoader(() =>
   import("../pages/HandleValueByHooks")
 );
 
+const TestReact18 = ReactAsyncLoader(() => import('../pages/TestReact18'))
+
 export default function RouterComponent() {
   return (
     <Router basename="/pure-react-project-with-webpack">
@@ -39,6 +41,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/handleValueByHooks">
           <HandleValueByHooks></HandleValueByHooks>
+        </Route>
+        <Route exact path="/testReact18">
+          <TestReact18></TestReact18>
         </Route>
       </Switch>
     </Router>
