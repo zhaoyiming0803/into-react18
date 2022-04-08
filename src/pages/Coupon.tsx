@@ -1,8 +1,8 @@
-import * as React from "react";
-import { useState, useCallback, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
-import { CouponForm } from "@/types/index";
-import CouponItem from "@/components/CouponItem";
+import * as React from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
+import { useHistory } from "react-router-dom"
+import { CouponForm } from "@/types/index"
+import CouponItem from "@/components/CouponItem"
 
 interface Props {}
 
@@ -42,55 +42,56 @@ const couponForm: CouponForm = {
   qualitySelection: 3, // 优质精选
   bigRecommendation: 4, // 大牌推荐
   refund: 5, // 可退款
-};
+}
 
 function Coupon<T extends Props>(props: T) {
-  const history = useHistory();
-  // console.log(history);
-  console.log("history: ", history);
+  const history = useHistory()
+  // console.log(history)
+  console.log("history: ", history)
 
-  const [coupon, setCoupon] = useState(couponForm);
-  const [count, setCount] = useState(0);
-  const timerRef = useRef(null);
-  console.log("timerRef:", timerRef);
+  const [coupon, setCoupon] = useState(couponForm)
+  const [count, setCount] = useState(0)
+  const timerRef = useRef(null)
+  
+  console.log("timerRef:", timerRef)
 
-  (function startTimer() {
+  ;(function startTimer() {
     timerRef.current = setTimeout(() => {
-      setCount(count + 1);
+      setCount(count + 1)
       setCoupon({
         ...coupon,
         title: count + "",
-      });
-    }, 2000);
-  })();
+      })
+    }, 2000)
+  })()
 
   // The function passed to useEffect will run after the render is committed to the screen.
   // Think of effects as an escape hatch from React’s purely functional world into the imperative world.
   useEffect(() => {
-    console.log("useEffect");
+    console.log("useEffect")
 
     // let timer = setTimeout(() => {
-    //   setCount(count + 1);
+    //   setCount(count + 1)
     //   setCoupon({
     //     ...coupon,
     //     title: count + "",
-    //   });
-    // }, 2000);
+    //   })
+    // }, 2000)
 
-    return () => clearTimeout(timerRef.current);
-  });
+    return () => clearTimeout(timerRef.current)
+  })
 
   // useCallback(() => {
   //   setTimeout(() => {
-  //     setCount(count + 1);
+  //     setCount(count + 1)
   //     setCoupon({
   //       ...coupon,
   //       title: count + "",
-  //     });
-  //   }, 2000);
-  // }, []);
+  //     })
+  //   }, 2000)
+  // }, [])
 
-  console.log("coupon render");
+  console.log("coupon render")
 
   return (
     <div>
@@ -98,7 +99,7 @@ function Coupon<T extends Props>(props: T) {
       <div>{history.location.search}</div>
       <CouponItem coupon={coupon} />
     </div>
-  );
+  )
 }
 
-export default Coupon;
+export default Coupon
