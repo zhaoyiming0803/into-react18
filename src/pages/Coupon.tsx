@@ -46,39 +46,11 @@ const couponForm: CouponForm = {
 
 function Coupon<T extends Props>(props: T) {
   const history = useHistory();
-  // console.log(history);
   console.log("history: ", history);
 
   const [coupon, setCoupon] = useState(couponForm);
   const [count, setCount] = useState(0);
-  const timerRef = useRef(null);
-  console.log("timerRef:", timerRef);
 
-  (function startTimer() {
-    timerRef.current = setTimeout(() => {
-      setCount(count + 1);
-      setCoupon({
-        ...coupon,
-        title: count + "",
-      });
-    }, 2000);
-  })();
-
-  // The function passed to useEffect will run after the render is committed to the screen.
-  // Think of effects as an escape hatch from React’s purely functional world into the imperative world.
-  useEffect(() => {
-    console.log("useEffect");
-
-    // let timer = setTimeout(() => {
-    //   setCount(count + 1);
-    //   setCoupon({
-    //     ...coupon,
-    //     title: count + "",
-    //   });
-    // }, 2000);
-
-    return () => clearTimeout(timerRef.current);
-  });
 
   // useCallback(() => {
   //   setTimeout(() => {
@@ -90,6 +62,30 @@ function Coupon<T extends Props>(props: T) {
   //   }, 2000);
   // }, []);
 
+  const addCountMultiple = () => {
+    for (let i = 1; i <= 3; i++) {
+      setCount(count + i)
+    }
+    // 并不能立刻获取到最新值，React 会自动批处理，页面中展示的值是 count + 3
+    console.log('addCountMultiple: ', count)
+  }
+
+  const addCountMultipleInSetTimeout = () => {
+    setTimeout(() => {
+      for (let i = 1; i <= 3; i++) {
+        setCount(count + i)
+      }
+      // 并不能立刻获取到最新值，React 会自动批处理，页面中展示的值是 count + 3
+      console.log('addCountMultipleInSetTimeout: ', count)
+    })
+  }
+
+  useEffect(() => {
+    // 在受控环境中，count 变化后只执行一次，说明 setCount 是自动合并批处理的
+    // 在非受控环境中，count 会多次变化，不会自动批处理，并且 3 次打印不连续，说明 React 内部有机制调度排列所有任务的优先级
+    console.log('useEffect count: ', count)
+  }, [count])
+
   console.log("coupon render");
 
   return (
@@ -97,6 +93,10 @@ function Coupon<T extends Props>(props: T) {
       <h1>Coupon page</h1>
       <div>{history.location.search}</div>
       <CouponItem coupon={coupon} />
+      <div>------------------------------------------------------</div>
+      <div>count: {count}</div>
+      <button onClick={addCountMultiple}>click to change count</button>
+      <button onClick={addCountMultipleInSetTimeout}>click to change count in setTimeout</button>
     </div>
   );
 }
