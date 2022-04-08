@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import App from "@/App";
 import store from "@/store";
 
-debugger
 const root = createRoot(document.getElementById("root"))
 
 console.log('root: ', root)
@@ -12,14 +11,13 @@ console.log('root: ', root)
 console.log('root.render: ', root.render)
 console.log('root.unmount: ', root.unmount)
 
-// root.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>
-// )
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
 
-debugger
-root.render(<div>Test App</div>)
+// root.render(<div>Test App</div>)
 
 
 // root.render(
