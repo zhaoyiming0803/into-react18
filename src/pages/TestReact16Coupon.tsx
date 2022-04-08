@@ -86,6 +86,8 @@ function Coupon<T extends Props>(props: T) {
   useEffect(() => {
     // 在受控环境中，count 变化后只执行一次，说明 setCount 是自动合并批处理的
     // 在非受控环境中，count 会多次变化，不会自动批处理，并且 3 次打印不连续，说明 React 内部有机制调度排列所有任务的优先级
+
+    // console.log("coupon render") 的执行次数与当前 useEffect 回调的打印一样
     console.log('useEffect count: ', count)
   }, [count])
 
