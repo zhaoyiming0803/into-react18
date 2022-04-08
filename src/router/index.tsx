@@ -9,7 +9,7 @@ import {
 import ReactAsyncLoader from "@/components/ReactAsyncLoader";
 
 const Home = ReactAsyncLoader(() => import("../pages/Home"));
-const Coupon = ReactAsyncLoader(() => import("../pages/React16Coupon"));
+const Coupon = ReactAsyncLoader(() => import("../pages/TestReact16Coupon"));
 const SetTimeoutDemo = ReactAsyncLoader(() =>
   import("../pages/SetTimeoutDemo")
 );
