@@ -1,3 +1,6 @@
+/**
+ * 当前文件只用于测试 React 16 相关功能和特性
+ */
 import * as React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
