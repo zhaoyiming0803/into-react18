@@ -7,11 +7,18 @@ import City from '../components/City'
 
 import { Timeline } from '../components/Timeline/Timeline'
 
+import { ThemeContext } from '@/context/ThemeContext'
+
 function Home () {
   const history = useHistory()
+  const theme = useContext(ThemeContext)
+
+  console.log('Home re-render')
   
   return (
     <div>
+      <div>theme.dark.background: {JSON.stringify(theme)}</div>
+      
       <h1>Home</h1>
       <User count={1}></User>
       

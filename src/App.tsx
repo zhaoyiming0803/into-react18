@@ -22,6 +22,8 @@ export default function App () {
     }
   })
 
+  // useEffect 如果不加依赖项为空数组，每次 setTimeout 后执行 setTheme，导致组件会会多次重新渲染
+  // 其所属子组件也会多次重新渲染
   useEffect(() => {
     let timer = setTimeout(() => {
       setTheme({
@@ -34,14 +36,12 @@ export default function App () {
           size: 20
         }
       })
-      clearTimeout(timer)
-      timer = null
     }, 2000)
     return () => {
       clearTimeout(timer)
       timer = null
     }
-  })
+  }, [])
 
   console.log('app.tsx re-render')
 

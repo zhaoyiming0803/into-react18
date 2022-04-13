@@ -2,8 +2,6 @@ import React, { ReactElement, ReactNode, Children, isValidElement, FC, cloneElem
 import classNames from 'classnames'
 import { TimelineItem, TimelineItemProps } from './TimelineItem'
 
-import { ThemeContext } from '@/context/ThemeContext'
-
 type AnyObject = Record<any, any>
 
 type RenderProps = undefined | AnyObject | ((originProps: AnyObject) => AnyObject | undefined)
@@ -36,7 +34,6 @@ interface TimelineType extends FC<TimelineProps> {
 
 export const Timeline: TimelineType = (props: TimelineProps) => {
   const { children, className, ...restProps } = props
-  const theme = useContext(ThemeContext)
 
   const timeLineItems = Children.toArray(children)
   const truthyItems = timeLineItems.filter(item => !!item)
@@ -48,15 +45,9 @@ export const Timeline: TimelineType = (props: TimelineProps) => {
     })
   })
 
-  console.log('timeline re-render')
-
-  return (<>
-    <div>theme.dark.background: {JSON.stringify(theme)}</div>
-    <ul {...restProps}>
-      {items}
-    </ul>
-  </>
-  )
+  return <ul {...restProps}>
+    {items}
+  </ul>
 }
 
 Timeline.Item = TimelineItem
