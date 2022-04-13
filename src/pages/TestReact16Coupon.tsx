@@ -78,14 +78,18 @@ function Coupon<T extends Props>(props: T) {
       for (let i = 1; i <= 3; i++) {
         setCount(count + i)
       }
-      // 并不能立刻获取到最新值，React 会自动批处理，页面中展示的值是 count + 3
+      // 非受控环境下：
+      // 并不能立刻获取到最新值，下面 console 的值是执行 setCount 前的值，页面中展示的值是 count + 3
+
+      // 感觉 React 16 在非受控环境下修改数据像 bug
+      // useEffect 中会执行 3 次，说明没有批处理，但是这里 console 又获取不到最新值
       console.log('addCountMultipleInSetTimeout: ', count)
     })
   }
 
   useEffect(() => {
-    // 在受控环境中，count 变化后只执行一次，说明 setCount 是自动合并批处理的
-    // 在非受控环境中，count 会多次变化，不会自动批处理，并且 3 次打印不连续，说明 React 内部有机制调度排列所有任务的优先级
+    // 在受控环境中，count 变化后下面 console 只执行一次
+    // 在非受控环境中，count 会多次变化，并且 3 次打印不连续，说明 React 内部有机制调度排列所有任务的优先级
 
     // console.log("coupon render") 的执行次数与当前 useEffect 回调的打印一样
     console.log('useEffect count: ', count)
