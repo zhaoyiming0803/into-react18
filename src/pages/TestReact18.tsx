@@ -1,5 +1,12 @@
+/**
+ * 当前文件只用于测试 React 18 相关特性
+ */
 import React, { useState, useRef, useEffect } from 'react'
 import { flushSync } from 'react-dom'
+
+import { test1 } from '../utils/test'
+
+console.log(test1())
 
 interface Props {
 
@@ -30,7 +37,7 @@ export default function TestReact18<T extends Props> (props: T) {
       flushSync(() => {
         setCount(count + i)
         // 无法实时获取到 count 最新值
-        // console.log('TestReact18 render') 执行了 3 次，说明 React 18 在非受控场景下也是自动批处理
+        // console.log('TestReact18 render') 执行了 3 次，说明 React 18 在 flushSync 不会自动批处理
         // 相同的，useEffect count: 也打印了 3 次
         console.log('addCountFlushSync count: ', count)
       })
