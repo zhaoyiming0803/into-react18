@@ -80,14 +80,13 @@ function Coupon<T extends Props>(props: T) {
       }
       // 非受控环境下：
       // 并不能立刻获取到最新值，下面 console 的值是执行 setCount 前的值，页面中展示的值是 count + 3
-
-      // 感觉 React 16 在非受控环境下修改数据像 bug
-      // useEffect 中会执行 3 次，说明没有批处理，但是这里 console 又获取不到最新值
+      // useEffect 中会执行 3 次（如果是 Vue 的 watch callback 就只会执行 1 次）
       console.log('addCountMultipleInSetTimeout: ', count)
     })
   }
 
   useEffect(() => {
+    // React 16 这种机制非常别扭，但从另一种角度想，既然是非受控环境，就无法控制做批处理，React 18 解决了这种问题：
     // 在受控环境中，count 变化后下面 console 只执行一次
     // 在非受控环境中，count 会多次变化，并且 3 次打印不连续，说明 React 内部有机制调度排列所有任务的优先级
 
