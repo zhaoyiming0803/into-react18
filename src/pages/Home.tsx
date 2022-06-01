@@ -1,17 +1,25 @@
-import * as React from 'react'
+import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { Button } from 'antd-mobile'
 import User from '../components/User'
 import City from '../components/City'
 
+import { Timeline } from '../components/Timeline/Timeline'
+
+import { ThemeContext } from '@/context/ThemeContext'
+
 function Home () {
   const history = useHistory()
+  const theme = useContext(ThemeContext)
+
+  console.log('Home re-render')
   
   return (
     <div>
+      <div>theme.dark.background: {JSON.stringify(theme)}</div>
+      
       <h1>Home</h1>
-
       <User count={1}></User>
       
       <Button onClick={() => history.push('/coupon?a=1&b=2')}  className="gotoCouponPage">
@@ -22,9 +30,20 @@ function Home () {
         to handle value by hooks page
       </Button>
 
+      <Button onClick={() => history.push('/testReact18')}>to Test18 page</Button>
+
       <Button onClick={() => history.push('/testFuncComponent')}>to TestFuncComponent page</Button>
 
       <City></City>
+
+      <Timeline>
+        <Timeline.Item label={<div>Label</div>} color="red">
+          123
+        </Timeline.Item>
+        <Timeline.Item>
+          456
+        </Timeline.Item>
+      </Timeline>
     </div>
   )
 }

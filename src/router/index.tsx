@@ -9,7 +9,7 @@ import {
 import ReactAsyncLoader from "@/components/ReactAsyncLoader";
 
 const Home = ReactAsyncLoader(() => import("../pages/Home"));
-const Coupon = ReactAsyncLoader(() => import("../pages/Coupon"));
+const Coupon = ReactAsyncLoader(() => import("../pages/TestReact16Coupon"));
 const SetTimeoutDemo = ReactAsyncLoader(() =>
   import("../pages/SetTimeoutDemo")
 );
@@ -17,6 +17,8 @@ const HandleValueByHooks = ReactAsyncLoader(() =>
   import("../pages/HandleValueByHooks")
 );
 const TestFuncComponent = ReactAsyncLoader(() => import('../pages/TestFuncComponent'))
+
+const TestReact18 = ReactAsyncLoader(() => import('../pages/TestReact18'))
 
 export default function RouterComponent() {
   return (
@@ -40,6 +42,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/handleValueByHooks">
           <HandleValueByHooks></HandleValueByHooks>
+        </Route>
+        <Route exact path="/testReact18">
+          <TestReact18></TestReact18>
         </Route>
         <Route exact path="/testFuncComponent">
           <TestFuncComponent></TestFuncComponent>

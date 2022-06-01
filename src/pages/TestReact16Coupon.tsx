@@ -1,5 +1,8 @@
+/**
+ * 当前文件只用于测试 React 16 相关功能和特性
+ */
 import * as React from "react";
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { CouponForm } from "@/types/index";
 import CouponItem from "@/components/CouponItem";
@@ -42,53 +45,54 @@ const couponForm: CouponForm = {
   qualitySelection: 3, // 优质精选
   bigRecommendation: 4, // 大牌推荐
   refund: 5, // 可退款
-};
+}
 
 function Coupon<T extends Props>(props: T) {
   const history = useHistory();
-  // console.log(history);
   console.log("history: ", history);
 
   const [coupon, setCoupon] = useState(couponForm);
   const [count, setCount] = useState(0);
-  const timerRef = useRef(null);
-  console.log("timerRef:", timerRef);
 
-  (function startTimer() {
-    timerRef.current = setTimeout(() => {
-      setCount(count + 1);
-      setCoupon({
-        ...coupon,
-        title: count + "",
-      });
-    }, 2000);
-  })();
-
-  // The function passed to useEffect will run after the render is committed to the screen.
-  // Think of effects as an escape hatch from React’s purely functional world into the imperative world.
-  useEffect(() => {
-    console.log("useEffect");
-
-    // let timer = setTimeout(() => {
-    //   setCount(count + 1);
-    //   setCoupon({
-    //     ...coupon,
-    //     title: count + "",
-    //   });
-    // }, 2000);
-
-    return () => clearTimeout(timerRef.current);
-  });
 
   // useCallback(() => {
   //   setTimeout(() => {
-  //     setCount(count + 1);
+  //     setCount(count + 1)
   //     setCoupon({
   //       ...coupon,
   //       title: count + "",
-  //     });
-  //   }, 2000);
-  // }, []);
+  //     })
+  //   }, 2000)
+  // }, [])
+
+  const addCountMultiple = () => {
+    for (let i = 1; i <= 3; i++) {
+      setCount(count + i)
+    }
+    // 并不能立刻获取到最新值，React 会自动批处理，页面中展示的值是 count + 3
+    console.log('addCountMultiple: ', count)
+  }
+
+  const addCountMultipleInSetTimeout = () => {
+    setTimeout(() => {
+      for (let i = 1; i <= 3; i++) {
+        setCount(count + i)
+      }
+      // 非受控环境下：
+      // 并不能立刻获取到最新值，下面 console 的值是执行 setCount 前的值，页面中展示的值是 count + 3
+      // useEffect 中会执行 3 次（如果是 Vue 的 watch callback 就只会执行 1 次）
+      console.log('addCountMultipleInSetTimeout: ', count)
+    })
+  }
+
+  useEffect(() => {
+    // React 16 这种机制非常别扭，但从另一种角度想，既然是非受控环境，就无法控制做批处理，React 18 解决了这种问题：
+    // 在受控环境中，count 变化后下面 console 只执行一次
+    // 在非受控环境中，count 会多次变化，并且 3 次打印不连续，说明 React 内部有机制调度排列所有任务的优先级
+
+    // console.log("coupon render") 的执行次数与当前 useEffect 回调的打印一样
+    console.log('useEffect count: ', count)
+  }, [count])
 
   console.log("coupon render");
 
@@ -97,8 +101,12 @@ function Coupon<T extends Props>(props: T) {
       <h1>Coupon page</h1>
       <div>{history.location.search}</div>
       <CouponItem coupon={coupon} />
+      <div>------------------------------------------------------</div>
+      <div>count: {count}</div>
+      <button onClick={addCountMultiple}>click to change count</button>
+      <button onClick={addCountMultipleInSetTimeout}>click to change count in setTimeout</button>
     </div>
-  );
+  )
 }
 
-export default Coupon;
+export default Coupon

@@ -150,7 +150,6 @@ let cachedMemorizedCallback: Function
 
 function TestUseCallback1 (props: TestUseCallbackProp) {
   const { count } = props
-  debugger
   const memoizedCallback = useCallback(() => {
     console.log('TestUseCallback1')
   }, [count])
