@@ -27,6 +27,7 @@ export default function TestReact18<T extends Props> (props: T) {
       setCount(count + i)
       // 无法实时获取到 count 最新值
       // console.log('TestReact18 render') 执行了 1 次，说明 React 18 在非受控场景下也是自动批处理
+      // console.log('useEffect count: ', count) 只打印一次最终的结果值 3，与 Vue 的 watch 类似
       console.log('addCountAsync count: ', count)
     }
   }
@@ -36,9 +37,10 @@ export default function TestReact18<T extends Props> (props: T) {
     for (let i = 1; i <= 3; i++) {
       flushSync(() => {
         setCount(count + i)
-        // 无法实时获取到 count 最新值
         // console.log('TestReact18 render') 执行了 3 次，说明 React 18 在 flushSync 不会自动批处理
-        // 相同的，useEffect count: 也打印了 3 次
+        // 相同的，useEffect count: 也打印了 3 次，值分别是从当前值递增的 0 1 2 等
+
+        // 无法实时获取到 count 最新值，依旧打印 3 次 0
         console.log('addCountFlushSync count: ', count)
       })
     }
