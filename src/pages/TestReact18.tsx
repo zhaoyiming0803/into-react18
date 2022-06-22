@@ -23,7 +23,7 @@ export default function TestReact18<T extends Props> (props: T) {
   }, [count])
 
   const addCountAsync = () => {
-    for (let i = 1; i <= 3; i++) {
+    for (var i = 1; i <= 3; i++) {
       setCount(count + i)
       // 无法实时获取到 count 最新值
       // console.log('TestReact18 render') 执行了 1 次，说明 React 18 在非受控场景下也是自动批处理
