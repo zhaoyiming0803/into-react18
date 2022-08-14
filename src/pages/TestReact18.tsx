@@ -1,7 +1,7 @@
 /**
  * 当前文件只用于测试 React 18 相关特性
  */
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 
 import { test1 } from '../utils/test'
@@ -96,6 +96,35 @@ export default function TestReact18<T extends Props> (props: T) {
 
   console.log('TestReact18 render')
 
+  const requestStr = (): Promise<string> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(Math.random() + '')
+      }, 1000)
+    })
+  }
+
+  const [str, setStr] = useState<string>('')
+
+  const useData = () => {
+    const initStr = useCallback(async () => {
+      const _str = await requestStr()
+      setStr(_str)
+    }, [])
+
+    useEffect(() => {
+      initStr()
+    }, [])
+
+    return useMemo(() => {
+      return {
+        a: 1,
+        b: 2,
+        str
+      }
+    }, [str])
+  }
+
   return <div ref={containerRef}>
     <button onClick={addCountAsync}>click async</button>
     <button onClick={addCountFlushSync}>click flushSync</button>
@@ -105,5 +134,6 @@ export default function TestReact18<T extends Props> (props: T) {
     <button onClick={insertRefDOM}>insert countRef DOM</button>
     <div ref={countRef}>count: {count}</div>
     <div ref={countCopiedRef}></div>
+    <div>{useData().a + useData().b + useData().str}</div>
   </div>
 }
