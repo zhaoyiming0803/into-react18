@@ -34,6 +34,8 @@ function Home () {
 
       <Button onClick={() => history.push('/testFuncComponent')}>to TestFuncComponent page</Button>
 
+      <Button onClick={() => history.push('/testGuard')}>to TestGuard page</Button>
+
       <City></City>
 
       <Timeline>

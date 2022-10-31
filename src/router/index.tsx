@@ -20,6 +20,8 @@ const TestFuncComponent = ReactAsyncLoader(() => import('../pages/TestFuncCompon
 
 const TestReact18 = ReactAsyncLoader(() => import('../pages/TestReact18'))
 
+const TestGuard = ReactAsyncLoader(() => import('../pages/TestGuard'))
+
 export default function RouterComponent() {
   return (
     <Router basename="/pure-react-project-with-webpack">
@@ -48,6 +50,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/testFuncComponent">
           <TestFuncComponent></TestFuncComponent>
+        </Route>
+        <Route exact path="/testGuard">
+          <TestGuard></TestGuard>
         </Route>
       </Switch>
     </Router>
