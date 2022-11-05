@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Guard, GuardMode } from "@authing/react-ui-components"
+import { Guard, GuardMode } from "@authing/react18-components"
 
 import "@authing/react-ui-components/lib/index.min.css"
 
@@ -12,6 +12,6 @@ export default function TestGuard () {
   }
 
   return <Guard appId={appId} onLogin={onLogin} visible={true} config={{
-    mode: GuardMode.Modal
+    mode: GuardMode.Normal
   }} />
 }

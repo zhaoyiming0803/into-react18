@@ -107,7 +107,9 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@authing/guard-react18": "^5.0.8-alpha.3",
     "@authing/react-ui-components": "^4.0.9",
+    "@authing/react18-ui-components": "^4.1.0-alpha.3",
     "@babel/plugin-transform-modules-commonjs": "^7.16.8",
     "@babel/runtime": "^7.4.5",
     "@types/lodash": "^4.14.178",
@@ -115,7 +117,7 @@
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
     "qs": "^6.11.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
