@@ -1,4 +1,6 @@
-import React, { ChangeEvent, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+
+import { QRCodeSVG } from 'qrcode.react'
 
 export default function TestFuncComponent () {
   const [count, setCount] = useState(1)
@@ -18,6 +20,8 @@ export default function TestFuncComponent () {
     <TestUseMemo count={count}></TestUseMemo>
 
     {count % 2 === 0 && <UserSection user={user}></UserSection>}
+
+    <QRCodeSVG value="https://www.baidu.com"></QRCodeSVG>
   </div>
 }
 
