@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import RouterComponent from "./router/index";
+import React, { useEffect, useState } from 'react'
+import RouterComponent from './router/index'
 
 import { ThemeContext } from '@/context/ThemeContext'
 
