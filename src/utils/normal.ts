@@ -1,1 +1,0 @@
-export const trim = (str: string): string => str.toString().replace(/(^\s*)|(\s*$)/g, '')
