@@ -15,9 +15,9 @@ function App2 () {
     // workLoopSync
     // ******
     // performUnitOfWork
+    // ******
     // beginWork$1
     // beginWork
-    // ******
     // attemptEarlyBailoutIfNoScheduledUpdate
     // bailoutOnAlreadyFinishedWork
     // cloneChildFibers
