@@ -24,8 +24,12 @@ function App2 () {
     // createWorkInProgress
 
     // updateFunctionComponent
+
+    // ********
     // reconcileChildren
     // reconcileChildFibers
+    // ********
+    
     // reconcileSingleElement
     // useFiber
     // createWorkInProgress
