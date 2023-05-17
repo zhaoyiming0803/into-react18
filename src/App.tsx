@@ -6,10 +6,15 @@ function App () {
   return <>App</>
 }
 
-debugger
+// debugger
 const root1: Root = createRoot(document.querySelector('#root1'))
-debugger
+// debugger
 root1.render(<App />)
+
+setTimeout(() => {
+  debugger
+  root1.unmount()
+})
 
 // const root2: Root = createRoot(document.querySelector('#root2'))
 // root2.render(createElement('div', {
