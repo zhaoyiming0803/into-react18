@@ -6,7 +6,7 @@ function App () {
   return <>App</>
 }
 
-// debugger
+debugger
 const root1: Root = createRoot(document.querySelector('#root1'))
 debugger
 root1.render(<App />)
