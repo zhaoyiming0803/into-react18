@@ -161,6 +161,30 @@ export function scheduleUpdateOnFiber(
 
   ensureRootIsScheduled(root, eventTime);
 }
+
+function ensureRootIsScheduled () {
+  requestHostCallback()
+}
+
+function requestHostCallback(callback) {
+  scheduledHostCallback = callback;
+
+  if (!isMessageLoopRunning) {
+    isMessageLoopRunning = true;
+    schedulePerformWorkUntilDeadline();
+  }
+}
+
+function schedulePerformWorkUntilDeadline () {
+  // setImmediate
+  // postMessage
+  // setTimeout
+  performWorkUntilDeadline()
+}
+
+function performWorkUntilDeadline () {
+  
+}
 ```
 
 ## beginWork
