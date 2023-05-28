@@ -101,4 +101,35 @@ export function getLabelForLane(lane: Lane): string | void {
     }
   }
 }
+
+export function includesSomeLane(a: Lanes | Lane, b: Lanes | Lane): boolean {
+  return (a & b) !== NoLanes;
+}
+
+export function isSubsetOfLanes(set: Lanes, subset: Lanes | Lane): boolean {
+  return (set & subset) === subset;
+}
+
+export function mergeLanes(a: Lanes | Lane, b: Lanes | Lane): Lanes {
+  return a | b;
+}
+
+export function removeLanes(set: Lanes, subset: Lanes | Lane): Lanes {
+  return set & ~subset;
+}
+
+export function intersectLanes(a: Lanes | Lane, b: Lanes | Lane): Lanes {
+  return a & b;
+}
+
+// Seems redundant, but it changes the type from a single lane (used for
+// updates) to a group of lanes (used for flushing work).
+export function laneToLanes(lane: Lane): Lanes {
+  return lane;
+}
+
+export function higherPriorityLane(a: Lane, b: Lane): Lane {
+  // This works because the bit ranges decrease in priority as you go left.
+  return a !== NoLane && a < b ? a : b;
+}
 ```
