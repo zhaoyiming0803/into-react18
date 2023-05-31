@@ -183,7 +183,7 @@ function schedulePerformWorkUntilDeadline () {
 }
 
 function performWorkUntilDeadline () {
-  
+
 }
 ```
 
@@ -454,5 +454,16 @@ function beginWork(
     `Unknown unit of work tag (${workInProgress.tag}). This error is likely caused by a bug in ` +
       'React. Please file an issue.',
   );
+}
+```
+
+## workLoopSync
+
+```ts
+function workLoopSync() {
+  // Already timed out, so perform work without checking if we need to yield.
+  while (workInProgress !== null) {
+    performUnitOfWork(workInProgress);
+  }
 }
 ```
