@@ -467,3 +467,40 @@ function workLoopSync() {
   }
 }
 ```
+
+```ts
+function commitHookEffectListMount(flags: HookFlags, finishedWork: Fiber) {
+  const updateQueue: FunctionComponentUpdateQueue | null =
+    (finishedWork.updateQueue: any);
+  const lastEffect = updateQueue !== null ? updateQueue.lastEffect : null;
+  if (lastEffect !== null) {
+    const firstEffect = lastEffect.next;
+    let effect = firstEffect;
+    do {
+      // 判断是 effect 还是 layoutEffect
+      if ((effect.tag & flags) === flags) {
+        if (enableSchedulingProfiler) {
+          if ((flags & HookPassive) !== NoHookEffect) {
+            markComponentPassiveEffectMountStarted(finishedWork);
+          } else if ((flags & HookLayout) !== NoHookEffect) {
+            markComponentLayoutEffectMountStarted(finishedWork);
+          }
+        }
+
+        // Mount
+        const create = effect.create;
+
+        effect.destroy = create();
+
+        if (enableSchedulingProfiler) {
+          if ((flags & HookPassive) !== NoHookEffect) {
+            markComponentPassiveEffectMountStopped();
+          } else if ((flags & HookLayout) !== NoHookEffect) {
+            markComponentLayoutEffectMountStopped();
+          }
+        }
+      effect = effect.next;
+    } while (effect !== firstEffect);
+  }
+}
+```
