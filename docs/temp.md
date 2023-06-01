@@ -457,6 +457,8 @@ function beginWork(
 }
 ```
 
+workLoopSync 和 workLoopConcurrent 执行完后，开始 commitRoot
+
 ## workLoopSync
 
 ```ts
@@ -468,6 +470,56 @@ function workLoopSync() {
 }
 ```
 
+``` ts
+function workLoopConcurrent() {
+  // Perform work until Scheduler asks us to yield
+  while (workInProgress !== null && !shouldYield()) {
+    // $FlowFixMe[incompatible-call] found when upgrading Flow
+    performUnitOfWork(workInProgress);
+  }
+}
+```
+
+## performUnitOfWork
+
+包含 beginWork 和 completeWork
+
+```ts
+function performUnitOfWork(unitOfWork: Fiber): void {
+  // The current, flushed, state of this fiber is the alternate. Ideally
+  // nothing should rely on this, but relying on it here means that we don't
+  // need an additional field on the work in progress.
+  const current = unitOfWork.alternate;
+  setCurrentDebugFiberInDEV(unitOfWork);
+
+  let next;
+  if (enableProfilerTimer && (unitOfWork.mode & ProfileMode) !== NoMode) {
+    startProfilerTimer(unitOfWork);
+    next = beginWork(current, unitOfWork, renderLanes);
+    stopProfilerTimerIfRunningAndRecordDelta(unitOfWork, true);
+  } else {
+    next = beginWork(current, unitOfWork, renderLanes);
+  }
+
+  resetCurrentDebugFiberInDEV();
+
+  // 赋予新值
+  unitOfWork.memoizedProps = unitOfWork.pendingProps;
+
+  if (next === null) {
+    // If this doesn't spawn new work, complete the current work.
+    completeUnitOfWork(unitOfWork);
+  } else {
+    // workInProgress !== null
+    // 继续执行 workLoopSync 或 workLoopConcurrent 中 while 循环
+    workInProgress = next;
+  }
+
+  ReactCurrentOwner.current = null;
+}
+```
+
+## commitHookEffectListMount
 ```ts
 function commitHookEffectListMount(flags: HookFlags, finishedWork: Fiber) {
   const updateQueue: FunctionComponentUpdateQueue | null =
@@ -502,5 +554,49 @@ function commitHookEffectListMount(flags: HookFlags, finishedWork: Fiber) {
       effect = effect.next;
     } while (effect !== firstEffect);
   }
+}
+```
+
+
+## reconcileChildren
+
+```ts
+function reconcileChildren(current, workInProgress, nextChildren, renderLanes) {
+  if (current === null) {
+    // 首次 mount
+
+    // If this is a fresh new component that hasn't been rendered yet, we
+    // won't update its child set by applying minimal side-effects. Instead,
+    // we will add them all to the child before it gets rendered. That means
+    // we can optimize this reconciliation pass by not tracking side-effects.
+    workInProgress.child = mountChildFibers(workInProgress, null, nextChildren, renderLanes);
+  } else {
+    // 更新数据
+
+    // If the current child is the same as the work in progress, it means that
+    // we haven't yet started any work on these children. Therefore, we use
+    // the clone algorithm to create a copy of all the current children.
+    // If we had any progressed work already, that is invalid at this point so
+    // let's throw it out.
+    workInProgress.child = reconcileChildFibers(workInProgress, current.child, nextChildren, renderLanes);
+  }
+}
+```
+
+## commitUpdate
+```ts
+export function commitUpdate(
+  domElement: Instance,
+  updatePayload: Array<mixed>,
+  type: string,
+  oldProps: Props,
+  newProps: Props,
+  internalInstanceHandle: Object,
+): void {
+  // Apply the diff to the DOM node.
+  updateProperties(domElement, updatePayload, type, oldProps, newProps);
+  // Update the props handle so that we know which props are the ones with
+  // with current event handlers.
+  updateFiberProps(domElement, newProps);
 }
 ```
