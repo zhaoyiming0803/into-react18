@@ -79,6 +79,14 @@
         content: "";
       }
     </style>
+
+    <script>
+      ;(function () {
+        document.addEventListener('DOMContentLoaded', (event) => {
+          console.log('DOM fully loaded and parsed'); // 译者注："DOM 完全加载以及解析"
+        })
+      })()
+    </script>
   </head>
   <body>
     <div id="root1"></div>

@@ -1,32 +1,40 @@
-import React from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { createRoot, Root } from 'react-dom/client'
 
-import { render } from 'react-dom'
+function App () {
+  const [count, setCount] = useState<number>(0)
 
-interface AppProps {
-  root: string
-}
+  // useLayoutEffect 总是在 DOMContentLoaded 前执行，useEffect 不一定
 
-function App(props: AppProps) {
-  const { root } = props
-  return <>App: {root}</>
+  // commitLayoutEffects（同步先执行） 和 flushPassiveEffects（异步后执行） 都在 commitRoot 中
+
+  // commitHookEffectListMount 最核心的作用就是执行 useEffect 或 useLayoutEffect 的第一个参数（函数）
+
+  // debugger
+  useEffect(() => {
+    debugger
+    console.log('useEffect: ', count, document.querySelector('#count-box').innerHTML)
+
+    return () => {
+      console.log('component destroy in useEffect')
+    }
+  }, [count])
+
+  // debugger
+  useLayoutEffect(() => {
+    debugger
+    console.log('useLayoutEffect: ', count, document.querySelector('#count-box').innerHTML)
+  }, [count])
+  
+  return <>
+    <div id="count-box">{count}</div>
+    <button onClick={() => setCount(count + 1)}>Button</button>
+  </>
 }
 
 const root1: Root = createRoot(document.querySelector('#root1'))
-root1.render(<App root="root1" />)
 
+root1.render(<App />)
 
-const root2: Root = createRoot(document.querySelector('#root2'))
-root2.render(<App root="root2" />)
-
-render(<App root="root3" />, document.querySelector('#root3'))
-
-// 每次调用 createRoot 都首先创建一个 FiberRoot，然后在 FiberRoot 中创建 RootFiber 及一系列 FiberNode
-
-/**
-  var uninitializedFiber = createHostRootFiber(tag, isStrictMode);
-  // rootFiber 与 FiberRoot 的关联关系
-  root.current = uninitializedFiber;
-  uninitializedFiber.stateNode = root;
- */
+console.log(root1)
