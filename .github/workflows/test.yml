@@ -1,16 +1,9 @@
 name: test
 
 on:
-  push:
+  workflow_dispatch:
     branches:
       - master
-    paths-ignore:
-      - '*.md'
-      - LICENSE
-      - .gitignore
-      - .npmignore
-      - .editorconfig
-  pull_request:
     paths-ignore:
       - '*.md'
       - LICENSE
