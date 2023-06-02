@@ -11,7 +11,7 @@ function App () {
 
   // RootFiber(beginWork) -> App(beginWork) -> p(beginWork) -> p(completeWork) 
   // -> p.sibling - button(beginWork) -> button(completeWork)
-  // -> App(completeWork) -> RootFiber(completeWork)
+  // -> button-return - App(completeWork) -> RootFiber(completeWork)
   return <>
     <p>123</p>
     <button onClick={() => {
