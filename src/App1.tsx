@@ -11,6 +11,13 @@ function App () {
 
   // commitHookEffectListMount 最核心的作用就是执行 useEffect 或 useLayoutEffect 的第一个参数（函数）
 
+  // commitMutationEffects
+  // commitLayoutEffects
+  // requestPaint
+  // onCommitRoot
+  // ensureRootIsScheduled
+  // flushPassiveEffects
+
   // debugger
   useEffect(() => {
     debugger

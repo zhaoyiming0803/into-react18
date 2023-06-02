@@ -4,6 +4,7 @@ import { createRoot, Root } from 'react-dom/client'
 
 function App () {
   const [count, setCount] = useState<number>(0)
+
   // React 深度优先遍历
   // p 标签没有 child 了，然后找 p 的 sibling 即 button
   // beginWork 和 completeWork 皆是如此
