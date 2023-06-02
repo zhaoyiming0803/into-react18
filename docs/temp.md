@@ -601,12 +601,317 @@ export function commitUpdate(
 }
 ```
 
+## reconcileChildFibersImpl
+
+判断是进入单节点 diff 或 多节点 diff
+
+```ts
+function reconcileChildFibersImpl(
+    returnFiber: Fiber,
+    currentFirstChild: Fiber | null,
+    newChild: any,
+    lanes: Lanes,
+  ): Fiber | null {
+    // This function is not recursive.
+    // If the top level item is an array, we treat it as a set of children,
+    // not as a fragment. Nested arrays on the other hand will be treated as
+    // fragment nodes. Recursion happens at the normal flow.
+
+    // Handle top level unkeyed fragments as if they were arrays.
+    // This leads to an ambiguity between <>{[...]}</> and <>...</>.
+    // We treat the ambiguous cases above the same.
+    // TODO: Let's use recursion like we do for Usable nodes?
+    const isUnkeyedTopLevelFragment =
+      typeof newChild === 'object' &&
+      newChild !== null &&
+      newChild.type === REACT_FRAGMENT_TYPE &&
+      newChild.key === null;
+    if (isUnkeyedTopLevelFragment) {
+      newChild = newChild.props.children;
+    }
+
+    // Handle object types
+    // 单节点
+    if (typeof newChild === 'object' && newChild !== null) {
+      switch (newChild.$$typeof) {
+        case REACT_ELEMENT_TYPE:
+          return placeSingleChild(
+            reconcileSingleElement(
+              returnFiber,
+              currentFirstChild,
+              newChild,
+              lanes,
+            ),
+          );
+        case REACT_PORTAL_TYPE:
+          return placeSingleChild(
+            reconcileSinglePortal(
+              returnFiber,
+              currentFirstChild,
+              newChild,
+              lanes,
+            ),
+          );
+        case REACT_LAZY_TYPE:
+          const payload = newChild._payload;
+          const init = newChild._init;
+          // TODO: This function is supposed to be non-recursive.
+          return reconcileChildFibers(
+            returnFiber,
+            currentFirstChild,
+            init(payload),
+            lanes,
+          );
+      }
+
+      // 多节点
+      if (isArray(newChild)) {
+        return reconcileChildrenArray(
+          returnFiber,
+          currentFirstChild,
+          newChild,
+          lanes,
+        );
+      }
+
+      if (getIteratorFn(newChild)) {
+        return reconcileChildrenIterator(
+          returnFiber,
+          currentFirstChild,
+          newChild,
+          lanes,
+        );
+      }
+
+      // Usables are a valid React node type. When React encounters a Usable in
+      // a child position, it unwraps it using the same algorithm as `use`. For
+      // example, for promises, React will throw an exception to unwind the
+      // stack, then replay the component once the promise resolves.
+      //
+      // A difference from `use` is that React will keep unwrapping the value
+      // until it reaches a non-Usable type.
+      //
+      // e.g. Usable<Usable<Usable<T>>> should resolve to T
+      //
+      // The structure is a bit unfortunate. Ideally, we shouldn't need to
+      // replay the entire begin phase of the parent fiber in order to reconcile
+      // the children again. This would require a somewhat significant refactor,
+      // because reconcilation happens deep within the begin phase, and
+      // depending on the type of work, not always at the end. We should
+      // consider as an future improvement.
+      if (typeof newChild.then === 'function') {
+        const thenable: Thenable<any> = (newChild: any);
+        return reconcileChildFibersImpl(
+          returnFiber,
+          currentFirstChild,
+          unwrapThenable(thenable),
+          lanes,
+        );
+      }
+
+      if (
+        newChild.$$typeof === REACT_CONTEXT_TYPE ||
+        newChild.$$typeof === REACT_SERVER_CONTEXT_TYPE
+      ) {
+        const context: ReactContext<mixed> = (newChild: any);
+        return reconcileChildFibersImpl(
+          returnFiber,
+          currentFirstChild,
+          readContextDuringReconcilation(returnFiber, context, lanes),
+          lanes,
+        );
+      }
+
+      throwOnInvalidObjectType(returnFiber, newChild);
+    }
+
+    if (
+      (typeof newChild === 'string' && newChild !== '') ||
+      typeof newChild === 'number'
+    ) {
+      return placeSingleChild(
+        reconcileSingleTextNode(
+          returnFiber,
+          currentFirstChild,
+          '' + newChild,
+          lanes,
+        ),
+      );
+    }
+
+    // Remaining cases are all treated as empty.
+    return deleteRemainingChildren(returnFiber, currentFirstChild);
+  }
+```
+
+## reconcileChildrenArray
+
+多节点 diff 具体实现
+``` ts
+function reconcileChildrenArray(
+    returnFiber: Fiber,
+    currentFirstChild: Fiber | null,
+    newChildren: Array<any>,
+    lanes: Lanes,
+  ): Fiber | null {
+    // This algorithm can't optimize by searching from both ends since we
+    // don't have backpointers on fibers. I'm trying to see how far we can get
+    // with that model. If it ends up not being worth the tradeoffs, we can
+    // add it later.
+
+    // Even with a two ended optimization, we'd want to optimize for the case
+    // where there are few changes and brute force the comparison instead of
+    // going for the Map. It'd like to explore hitting that path first in
+    // forward-only mode and only go for the Map once we notice that we need
+    // lots of look ahead. This doesn't handle reversal as well as two ended
+    // search but that's unusual. Besides, for the two ended optimization to
+    // work on Iterables, we'd need to copy the whole set.
+
+    // In this first iteration, we'll just live with hitting the bad case
+    // (adding everything to a Map) in for every insert/move.
+
+    // If you change this code, also update reconcileChildrenIterator() which
+    // uses the same algorithm.
+
+    let resultingFirstChild: Fiber | null = null;
+    let previousNewFiber: Fiber | null = null;
+
+    let oldFiber = currentFirstChild;
+    let lastPlacedIndex = 0;
+    let newIdx = 0;
+    let nextOldFiber = null;
+    for (; oldFiber !== null && newIdx < newChildren.length; newIdx++) {
+      if (oldFiber.index > newIdx) {
+        nextOldFiber = oldFiber;
+        oldFiber = null;
+      } else {
+        nextOldFiber = oldFiber.sibling;
+      }
+      const newFiber = updateSlot(
+        returnFiber,
+        oldFiber,
+        newChildren[newIdx],
+        lanes,
+      );
+      if (newFiber === null) {
+        // TODO: This breaks on empty slots like null children. That's
+        // unfortunate because it triggers the slow path all the time. We need
+        // a better way to communicate whether this was a miss or null,
+        // boolean, undefined, etc.
+        if (oldFiber === null) {
+          oldFiber = nextOldFiber;
+        }
+        break;
+      }
+      if (shouldTrackSideEffects) {
+        if (oldFiber && newFiber.alternate === null) {
+          // We matched the slot, but we didn't reuse the existing fiber, so we
+          // need to delete the existing child.
+          deleteChild(returnFiber, oldFiber);
+        }
+      }
+      lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
+      if (previousNewFiber === null) {
+        // TODO: Move out of the loop. This only happens for the first run.
+        resultingFirstChild = newFiber;
+      } else {
+        // TODO: Defer siblings if we're not at the right index for this slot.
+        // I.e. if we had null values before, then we want to defer this
+        // for each null value. However, we also don't want to call updateSlot
+        // with the previous one.
+        previousNewFiber.sibling = newFiber;
+      }
+      previousNewFiber = newFiber;
+      oldFiber = nextOldFiber;
+    }
+
+    if (newIdx === newChildren.length) {
+      // We've reached the end of the new children. We can delete the rest.
+      deleteRemainingChildren(returnFiber, oldFiber);
+      if (getIsHydrating()) {
+        const numberOfForks = newIdx;
+        pushTreeFork(returnFiber, numberOfForks);
+      }
+      return resultingFirstChild;
+    }
+
+    if (oldFiber === null) {
+      // If we don't have any more existing children we can choose a fast path
+      // since the rest will all be insertions.
+      for (; newIdx < newChildren.length; newIdx++) {
+        const newFiber = createChild(returnFiber, newChildren[newIdx], lanes);
+        if (newFiber === null) {
+          continue;
+        }
+        lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
+        if (previousNewFiber === null) {
+          // TODO: Move out of the loop. This only happens for the first run.
+          resultingFirstChild = newFiber;
+        } else {
+          previousNewFiber.sibling = newFiber;
+        }
+        previousNewFiber = newFiber;
+      }
+      if (getIsHydrating()) {
+        const numberOfForks = newIdx;
+        pushTreeFork(returnFiber, numberOfForks);
+      }
+      return resultingFirstChild;
+    }
+
+    // Add all children to a key map for quick lookups.
+    const existingChildren = mapRemainingChildren(returnFiber, oldFiber);
+
+    // Keep scanning and use the map to restore deleted items as moves.
+    for (; newIdx < newChildren.length; newIdx++) {
+      const newFiber = updateFromMap(
+        existingChildren,
+        returnFiber,
+        newIdx,
+        newChildren[newIdx],
+        lanes,
+      );
+      if (newFiber !== null) {
+        if (shouldTrackSideEffects) {
+          if (newFiber.alternate !== null) {
+            // The new fiber is a work in progress, but if there exists a
+            // current, that means that we reused the fiber. We need to delete
+            // it from the child list so that we don't add it to the deletion
+            // list.
+            existingChildren.delete(
+              newFiber.key === null ? newIdx : newFiber.key,
+            );
+          }
+        }
+        lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
+        if (previousNewFiber === null) {
+          resultingFirstChild = newFiber;
+        } else {
+          previousNewFiber.sibling = newFiber;
+        }
+        previousNewFiber = newFiber;
+      }
+    }
+
+    if (shouldTrackSideEffects) {
+      // Any existing children that weren't consumed above were deleted. We need
+      // to add them to the deletion list.
+      existingChildren.forEach(child => deleteChild(returnFiber, child));
+    }
+
+    if (getIsHydrating()) {
+      const numberOfForks = newIdx;
+      pushTreeFork(returnFiber, numberOfForks);
+    }
+    return resultingFirstChild;
+  }
+```
+
 ## reconcileSingleElement
 
+单节点 diff 具体实现
+
 ``` ts
-/**
- * 单节点 diff
- */
 function reconcileSingleElement(
     returnFiber: Fiber,
     currentFirstChild: Fiber | null,
