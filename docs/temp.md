@@ -615,11 +615,15 @@ function reconcileSingleElement(
   ): Fiber {
     const key = element.key;
     let child = currentFirstChild;
+
     while (child !== null) {
       // TODO: If key === null and child.key === null, then this only applies to
       // the first item in the list.
+      // 1、先对比 key
       if (child.key === key) {
         const elementType = element.type;
+
+        // 2、再对比 element type
         if (elementType === REACT_FRAGMENT_TYPE) {
           if (child.tag === Fragment) {
             deleteRemainingChildren(returnFiber, child.sibling);
@@ -647,21 +651,21 @@ function reconcileSingleElement(
               elementType.$$typeof === REACT_LAZY_TYPE &&
               resolveLazy(elementType) === child.type)
           ) {
+            // key 和 type 都相同，则可以直接复用
+            // useFiber 中把 current 的部分属性直接赋值给 workInProgress
             deleteRemainingChildren(returnFiber, child.sibling);
             const existing = useFiber(child, element.props);
             existing.ref = coerceRef(returnFiber, child, element);
             existing.return = returnFiber;
-            if (__DEV__) {
-              existing._debugSource = element._source;
-              existing._debugOwner = element._owner;
-            }
             return existing;
           }
         }
         // Didn't match.
+        // key 相同，type 不同
         deleteRemainingChildren(returnFiber, child);
         break;
       } else {
+        // key 不相同，直接 delete 重建
         deleteChild(returnFiber, child);
       }
       child = child.sibling;
@@ -677,6 +681,7 @@ function reconcileSingleElement(
       created.return = returnFiber;
       return created;
     } else {
+      // 根据 element 创建新的 fiber
       const created = createFiberFromElement(element, returnFiber.mode, lanes);
       created.ref = coerceRef(returnFiber, currentFirstChild, element);
       created.return = returnFiber;
