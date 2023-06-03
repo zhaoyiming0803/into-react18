@@ -5,10 +5,10 @@ import { flushSync } from 'react-dom'
 import { createRoot, Root } from 'react-dom/client'
 
 function App () {
-  debugger
+  // debugger
   const [count, setCount] = useState<number>(0)
 
-  // 对于 onClickCount1 和 onClickCount2 来说：
+  // 对于 onClickCount1、onClickCount2、onClickCount3 来说：
   // onClick 后执行 dispatchDiscreteEvent，一直到 batchedUpdates -> 『onClick 回调』 -> scheduleMicrotask -> flushSyncCallbacks -> performSyncWorkOnRoot -> commitRoot
   // 所以执行完 『onClick 回调』 后无法立刻获取到最新的 dom 值，因为后面才执行 commitRoot
 
@@ -41,6 +41,15 @@ function App () {
     })
   }
 
+  const onClickCount3 = () => {
+    setCount((count) => {
+      return count + 1
+    })
+    // 内存中的 count 不是最新值
+    // dom 中的 count 是最新值
+    console.log('count in onClickCount3: ', count, document.querySelector('#box').innerHTML)
+  }
+
   // ----------------------------------
 
   // dispatchEventsForPlugins
@@ -52,17 +61,17 @@ function App () {
   // 直接执行 flushSyncCallbacks
   // 来到 scheduleMicrotask 中的 flushSyncCallbacks，在，这时 if 条件 !isFlushingSyncQueue && syncQueue !== null 不成立，不再执行，直接 return
 
-  const onClickCount3 = () => {
+  const onClickCount4 = () => {
     debugger
     flushSync(() => {
       setCount(count + 1)
     })
     // 内存中的 count 不是最新值
     // dom 中的 count 是最新值
-    console.log('count in onClickCount3: ', count, document.querySelector('#box').innerHTML)
+    console.log('count in onClickCount4: ', count, document.querySelector('#box').innerHTML)
   }
 
-  return <button onClick={onClickCount1} id="box">{count}</button>
+  return <button onClick={onClickCount4} id="box">{count}</button>
 }
 
 const root1: Root = createRoot(document.querySelector('#root1'))
