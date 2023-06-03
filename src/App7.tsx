@@ -117,8 +117,19 @@ function App () {
   }
 }
 
+
+let timer = null
+
 function render () {
-  window.app = fiber.stateNode()
+  if (timer) {
+    clearTimeout(timer)
+    timer = null
+  }
+
+  // batchedUpdate
+  timer = setTimeout(() => {
+    window.app = fiber.stateNode()
+  })
 }
 
 render()
