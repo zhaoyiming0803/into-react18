@@ -1,22 +1,37 @@
-// @ts-nocheck
+type Action = (key: any) => void
 
-import React from 'react'
+interface Fiber {
+  memorizedState: Hook | null
+  stateNode: () => { update: () => void }
+}
 
-import { createRoot, Root } from 'react-dom/client'
+interface Hook {
+  queue: Queue
+  memorizedState: any
+  next?: Hook
+}
 
-import ReactDOM from 'react-dom'
+interface Update {
+  action: Action
+  next?: Update
+}
 
-let workInProgressHook = null
+interface Queue {
+  pending?: Update
+}
+
+
+let workInProgressHook: Hook | null = null
 
 let isMount = true
 
-const fiber = {
+const fiber: Fiber = {
   memorizedState: null,
   stateNode: App
 }
 
 const Dispatcher = (function () {
-  function useState (initialState) {
+  function useState<T>(initialState: T) {
     let hook = null
 
     if (isMount) {
@@ -30,12 +45,12 @@ const Dispatcher = (function () {
 
     // --- udpate start
     if (hook.queue.pending) {
-      let update = hook.queue.pending.next
+      let update: Update = hook.queue.pending.next
 
       do {
         const action = update.action
         newState = typeof action === 'function' ? action(newState) : action
-        udpate = update.next
+        update = update.next as Update
       } while (update !== hook.queue.pending.next)
 
       hook.queue.pending = null
@@ -48,7 +63,7 @@ const Dispatcher = (function () {
   }
 
   function mountState () {
-    const hook = {
+    const hook: Hook = {
       queue: {
         pending: null
       },
@@ -73,8 +88,8 @@ const Dispatcher = (function () {
     return currentHook
   }
 
-  function dispatchSetState (queue, action) {
-    const update = {
+  function dispatchSetState (queue: Queue, action: Action) {
+    const update: Update = {
       action,
       next: null
     }
@@ -118,7 +133,7 @@ function App () {
 }
 
 
-let timer = null
+let timer: NodeJS.Timeout = null
 
 function render () {
   if (timer) {
