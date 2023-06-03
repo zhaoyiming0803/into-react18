@@ -102,9 +102,6 @@ const Dispatcher = (function () {
     }
 
     queue.pending = update
-
-    isMount = false
-    workInProgressHook = fiber.memorizedState
     
     render()
   }
@@ -143,7 +140,10 @@ function render () {
 
   // batchedUpdate
   timer = setTimeout(() => {
+    debugger
     window.app = fiber.stateNode()
+    isMount = false
+    workInProgressHook = fiber.memorizedState
   })
 }
 
