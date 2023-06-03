@@ -994,3 +994,44 @@ function reconcileSingleElement(
     }
   }
 ```
+
+## recursivelyTraverseMutationEffects
+
+```ts
+function recursivelyTraverseMutationEffects(
+  root: FiberRoot,
+  parentFiber: Fiber,
+  lanes: Lanes,
+) {
+  // Deletions effects can be scheduled on any fiber type. They need to happen
+  // before the children effects hae fired.
+  const deletions = parentFiber.deletions;
+  if (deletions !== null) {
+    for (let i = 0; i < deletions.length; i++) {
+      const childToDelete = deletions[i];
+      try {
+        commitDeletionEffects(root, parentFiber, childToDelete);
+      } catch (error) {
+        captureCommitPhaseError(childToDelete, parentFiber, error);
+      }
+    }
+  }
+
+  const prevDebugFiber = getCurrentDebugFiberInDEV();
+
+  // update 时，if 条件为 true
+  if (parentFiber.subtreeFlags & MutationMask) {
+    // 先遍历其子节点
+    let child = parentFiber.child;
+    while (child !== null) {
+      setCurrentDebugFiberInDEV(child);
+      // 一直遍历其子节点
+      commitMutationEffectsOnFiber(child, root, lanes);
+
+      // 直接点为 null 了，再找其 sibling
+      child = child.sibling;
+    }
+  }
+  setCurrentDebugFiberInDEV(prevDebugFiber);
+}
+```
