@@ -16,9 +16,7 @@
       "options": ["check-space"]
     },
     "member-access": false,
-    "only-arrow-functions": {
-      "options": ["allow-declarations", "allow-named-functions"]
-    },
+    "only-arrow-functions": false,
 
     "completed-docs": false,
     "no-any": false,
