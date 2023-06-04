@@ -3,7 +3,10 @@ import React from 'react'
 import { createRoot, Root } from 'react-dom/client'
 
 function App () {
-  return <>App</>
+  return <>
+    <p><span>A</span><section>B</section></p>
+    <a>C</a>
+  </>
 }
 
 debugger
