@@ -1095,6 +1095,7 @@ function mountWorkInProgressHook(): Hook {
 }
 ```
 
+## updateWorkInProgressHook
 ```ts
 function updateWorkInProgressHook(): Hook {
   // This function is used both for updates and for re-renders triggered by a
@@ -1175,5 +1176,56 @@ function updateWorkInProgressHook(): Hook {
 function basicStateReducer<S>(state: S, action: BasicStateAction<S>): S {
   // $FlowFixMe: Flow doesn't like mixed types
   return typeof action === 'function' ? action(state) : action;
+}
+```
+
+## shouldYieldToHost
+
+shouldYield
+
+```ts
+function shouldYieldToHost(): boolean {
+  const timeElapsed = getCurrentTime() - startTime;
+  if (timeElapsed < frameInterval) {
+    // The main thread has only been blocked for a really short amount of time;
+    // smaller than a single frame. Don't yield yet.
+    return false;
+  }
+
+  // The main thread has been blocked for a non-negligible amount of time. We
+  // may want to yield control of the main thread, so the browser can perform
+  // high priority tasks. The main ones are painting and user input. If there's
+  // a pending paint or a pending input, then we should yield. But if there's
+  // neither, then we can yield less often while remaining responsive. We'll
+  // eventually yield regardless, since there could be a pending paint that
+  // wasn't accompanied by a call to `requestPaint`, or other main thread tasks
+  // like network events.
+  if (enableIsInputPending) {
+    if (needsPaint) {
+      // There's a pending paint (signaled by `requestPaint`). Yield now.
+      return true;
+    }
+    if (timeElapsed < continuousInputInterval) {
+      // We haven't blocked the thread for that long. Only yield if there's a
+      // pending discrete input (e.g. click). It's OK if there's pending
+      // continuous input (e.g. mouseover).
+      if (isInputPending !== null) {
+        return isInputPending();
+      }
+    } else if (timeElapsed < maxInterval) {
+      // Yield if there's either a pending discrete or continuous input.
+      if (isInputPending !== null) {
+        return isInputPending(continuousOptions);
+      }
+    } else {
+      // We've blocked the thread for a long time. Even if there's no pending
+      // input, there may be some other scheduled work that we don't know about,
+      // like a network event. Yield now.
+      return true;
+    }
+  }
+
+  // `isInputPending` isn't available. Yield now.
+  return true;
 }
 ```
