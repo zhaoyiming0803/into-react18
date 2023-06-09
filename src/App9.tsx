@@ -87,6 +87,13 @@ root1.render(<App />)
 
 console.log(root1)
 
+
+// createRoot 时将所有的事件都绑定到 root 节点
+// render 后获取到完成的链表结构
+// 触发事件后，根据链表结构找到对应的绑定在 dom 上的捕获或冒泡事件（getListener），执行对应的 listener（batchedUpdates）
+// https://github.com/zhaoyiming0803/test-code/blob/master/test350.html
+
+
 // getListener
 // getFiberCurrentPropsFromNode（children、onClick、onClickCapture 等都挂载在 props 上）
 
