@@ -109,5 +109,5 @@ console.log(root1)
 // getFiberCurrentPropsFromNode（children、onClick、onClickCapture 等都挂载在 props 上）
 
 // 第一步：先根据链表结构把所有的 React capture 事件找出来，然后 batchedUpdates
-// 第二步：在 flushSyncCallbacksOnlyInLegacyMode 中执行所有的 native 事件（先捕获再冒泡）
+// 第二步：在 flushSyncCallbacksOnlyInLegacyMode 中执行所有的 native 事件（先捕获再冒泡），如何做到的？参考：https://github.com/zhaoyiming0803/test-code/blob/master/test350-event-react18.html 注释
 // 第三步：先根据链表结构把所有的 React bubble 事件找出来，然后 batchedUpdates
