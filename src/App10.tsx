@@ -11,7 +11,7 @@ function App () {
     // 这里的 count 依旧是 0，而 innerHTML 却是 1 的原因：
     // count 相当于局部变量
     // innerHTML 相当于全局变量
-    // https://github.com/zhaoyiming0803/test-code/blob/master/test350.html
+    // https://github.com/zhaoyiming0803/test-code/blob/master/test354.js
     setTimeout(() => {
       console.log('count in setTimeout: ', count, document.querySelector('#box').innerHTML) // 0 1
     }, 1000)
