@@ -119,3 +119,11 @@ const root1: Root = createRoot(document.querySelector('#root1'))
 root1.render(<App />)
 
 console.log(root1)
+
+// Vue 数据更新是同步的，页面渲染是异步的
+
+// Object.defineProperty 或 Proxy 都是放在闭包中代理某个值，
+// 修改值后，使用 console.log 重新获取值，会触发 getter，从闭包中可以获取到最新的修改后的值，
+// 但是此时页面尚未渲染，获取 dom 上还不是最新值，使用 nextTick 可以解决。
+
+// https://github.com/zhaoyiming0803/test-code/blob/master/test285.html
