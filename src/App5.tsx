@@ -12,27 +12,37 @@ function App () {
   // onClick 后执行 dispatchDiscreteEvent，一直到 batchedUpdates -> 『onClick 回调』 -> scheduleMicrotask -> flushSyncCallbacks -> performSyncWorkOnRoot -> commitRoot
   // 所以执行完 『onClick 回调』 后无法立刻获取到最新的 dom 值，因为后面才执行 commitRoot
 
-  // dispatchEventsForPlugins
-  // processDispatchQueue
-  // executeDispatch
-  // callCallback
-  // 『onClick 回调』
-  // flushSyncCallbacks，在 scheduleMicrotask 中
+  // dispatchSetState
+  // scheduleUpdateOnFiber
+  // ensureRootIsScheduled
+  // scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root))
+    /**
+         if (syncQueue === null) {
+          syncQueue = [callback]
+        } else {
+          // Push onto existing queue. Don't need to schedule a callback because
+          // we already scheduled one when we created the queue.
+          syncQueue.push(callback);
+        }
+    */
+  // ensureRootIsScheduled 中调用了 scheduleMicrotask，包装并异步执行 flushSyncCallbacks，这时：
+  // 判断条件 if (!isFlushingSyncQueue && syncQueue !== null) 中，isFlushingSyncQueue 为 false syncQueue 有值
 
-  // 在 performSyncWorkOnRoot 中赋值 finishedWork，来源于 RootFiber.alternate
-  // var finishedWork = root.current.alternate;
-  // root.finishedWork = finishedWork;
-  // root.finishedLanes = lanes;
-  // commitRoot()
-  // ensureRootIsScheduled()
-
+  // 注意与 onClickCount4 的区别
   const onClickCount1 = () => {
     debugger
     setCount(count + 1)
+    setTimeout(() => {
+      debugger
+      // 此时，页面中 button 的值已经被渲染为 1，但内存中的 count 仍然为 0
+      // App10.tsx
+      setCount(count + 100)
+    }, 1000)
     // 内存中的 count 和 dom 中的 count 都不会实时更新，不是最新值
     console.log('count in onClickCount1: ', count, document.querySelector('#box').innerHTML)
   }
 
+  // hook 的更新与 setTimeout 无关，这与 class 组件的 setState 的『合成事件』或『原生事件』不同
   const onClickCount2 = () => {
     setTimeout(() => {
       setCount(count + 1)
@@ -41,6 +51,8 @@ function App () {
     })
   }
 
+  // useState 的 dispatch 传递函数，只是为了能处理更多的业务逻辑而已，与是否『同步』或『异步』刷新无关
+  // 源码中有判断，如果是函数，则执行函数并获取 return 值。如果直接是值，则直接赋值
   const onClickCount3 = () => {
     setCount((count) => {
       return count + 1
@@ -71,7 +83,7 @@ function App () {
         }
     */
 
-  // flushSyncCallbacks
+  // flushSyncCallbacks，注意这里的 flushSyncCallbacks 是在 flushSync 中被调用的，而 flushSync 是手动调用的
   // 判断条件 if (!isFlushingSyncQueue && syncQueue !== null) 中，isFlushingSyncQueue 为 false syncQueue 有值
         // performSyncWorkOnRoot
         // renderRootSync
@@ -81,20 +93,25 @@ function App () {
         // commitRoot
         // ***************
 
-  // 下次执行 flushSyncCallbacks 时
+  // ensureRootIsScheduled 中调用了 scheduleMicrotask，所以 flushSyncCallbacks 最后还会被执行一次，但这时：
   // 判断条件 if(!isFlushingSyncQueue && syncQueue !== null) 中 isFlushingSyncQueue 为 true，不成立，syncQueue 为 null，故不再执行，直接 return
 
   const onClickCount4 = () => {
     debugger
     flushSync(() => {
+      debugger
       setCount(count + 1)
+      debugger
+      // 此时，页面中 button 的值已经被渲染为 1，但内存中的 count 仍然为 0
+      // // App10.tsx
+      setCount(count + 100)
     })
     // 内存中的 count 不是最新值
     // dom 中的 count 是最新值
     console.log('count in onClickCount4: ', count, document.querySelector('#box').innerHTML)
   }
 
-  return <button onClick={onClickCount4} id="box">{count}</button>
+  return <button onClick={onClickCount1} id="box">{count}</button>
 }
 
 const root1: Root = createRoot(document.querySelector('#root1'))
