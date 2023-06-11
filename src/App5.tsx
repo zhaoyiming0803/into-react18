@@ -46,7 +46,7 @@ function App () {
       return count + 1
     })
     // 内存中的 count 不是最新值
-    // dom 中的 count 是最新值
+    // dom 中的 count 不是最新值
     console.log('count in onClickCount3: ', count, document.querySelector('#box').innerHTML)
   }
 
@@ -58,8 +58,31 @@ function App () {
   // callCallback
   // 『onClick 回调』
   // flushSync
-  // 直接执行 flushSyncCallbacks
-  // 来到 scheduleMicrotask 中的 flushSyncCallbacks，在，这时 if 条件 !isFlushingSyncQueue && syncQueue !== null 不成立，不再执行，直接 return
+    // dispatchState
+    // ensureRootIsScheduled
+    // scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root))
+    /**
+         if (syncQueue === null) {
+          syncQueue = [callback]
+        } else {
+          // Push onto existing queue. Don't need to schedule a callback because
+          // we already scheduled one when we created the queue.
+          syncQueue.push(callback);
+        }
+    */
+
+  // flushSyncCallbacks
+  // 判断条件 if (!isFlushingSyncQueue && syncQueue !== null) 中，isFlushingSyncQueue 为 false syncQueue 有值
+        // performSyncWorkOnRoot
+        // renderRootSync
+        // workLoopSync
+        // while 循环执行 performUnitOfWork
+        // ***************
+        // commitRoot
+        // ***************
+
+  // 下次执行 flushSyncCallbacks 时
+  // 判断条件 if(!isFlushingSyncQueue && syncQueue !== null) 中 isFlushingSyncQueue 为 true，不成立，syncQueue 为 null，故不再执行，直接 return
 
   const onClickCount4 = () => {
     debugger
