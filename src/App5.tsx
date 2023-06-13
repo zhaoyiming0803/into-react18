@@ -35,7 +35,7 @@ function App () {
     setTimeout(() => {
       debugger
       // 此时，页面中 button 的值已经被渲染为 1，但内存中的 count 仍然为 0
-      // 下面的 flushSync 执行完后打印的 count 不是最新值，童颜的原因：
+      // 下面的 flushSync 执行完后打印的 count 不是最新值，同样的原因：
       // App10.tsx
       setCount(count + 100)
     }, 1000)
