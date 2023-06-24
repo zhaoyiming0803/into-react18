@@ -24,7 +24,11 @@ function App () {
 
   // 在 commitReconciliationEffects 中执行 commitPlacement
   // 在 commitPlacement 中执行 insertOrAppendPlacementNodeIntoContainer
-  // 因为是初次 mount，所以会一次性 appendChild，即 document.querySelector('#root1').appendChild(App 组件对应的 dom，即绑定了 onClick 事件的 div 的 Fiber 对应的 stateNode)
+  // ******************************
+  // 性能优化小技巧：
+  // 为了提高初次渲染效率，组件最好不要 return <></>，其所在组件的 fiber 的 tag 类型不是 HostComponent，会导致递归调用 insertOrAppendPlacementNodeIntoContainer
+  // 可以直接写 return <div></div>，这样因为是初次 mount，所以会一次性 appendChild，即 document.querySelector('#root1').appendChild(App 组件对应的 dom，即绑定了 onClick 事件的 div 的 Fiber 对应的 stateNode)
+  // ******************************
 
   // ---------------------------------------------------------
 
@@ -40,7 +44,7 @@ function App () {
   // commitMutationEffectsOnFiber
   // recursivelyTraverseMutationEffects
 
-  // child 为 null 时，发回上一个调用栈，执行：
+  // child 为 null 时，返回上一个调用栈，执行：
   // commitReconciliationEffects，传入的参数 finishedWork 为最后一个没有 child 的 child
   // commitUpdate
   // 根据链表的 child、siblings、return 属性，依次执行 commitMutationEffectsOnFiber -> recursivelyTraverseMutationEffects -> commitReconciliationEffects-> commitUpdate
