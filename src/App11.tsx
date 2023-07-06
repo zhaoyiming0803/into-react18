@@ -78,12 +78,12 @@ import { createRoot, Root } from 'react-dom/client'
  */
 
 function App () {
-  debugger
+  // debugger
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<boolean>(false)
 
   const onClickWithTransition = () => {
-    debugger
+    // debugger
     // startTransition 内部自己执行 setPending(true) 和 setPending(false)
     startTransition(() => {
       // ...
@@ -91,17 +91,19 @@ function App () {
   }
 
   const onClickWithoutTransition = () => {
-    debugger
+    // debugger
     // 手动执行两次 diapatcher
-    setStatus(true)
-    setStatus(false)
+    // setStatus(true)
+    // setStatus(false)
+
+    setStatus(!status)
   }
 
-  // useEffect(() => {
-  //   debugger
-  //   console.log('isPending: ', isPending)
-  //   console.log('status: ', status)
-  // }, [isPending, status])
+  useEffect(() => {
+    // debugger
+    console.log('isPending: ', isPending)
+    console.log('status: ', status)
+  }, [isPending, status])
 
   return <>
     <button onClick={onClickWithTransition}>onClickWithTransition - {isPending ? 1 : 0}</button>
