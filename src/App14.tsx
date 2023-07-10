@@ -124,13 +124,18 @@ function ComponentB (props: ComponentBProps) {
 }
 
 // 编写高性能 React 代码要注意：高内聚、低耦合
+// 组件功能尽量单一，一个组件只做一件事，读写分离
 // 为了使 ComponentB 更新时，ComponentA 不更新
 // 触发 setCount 的 hook 必须『单独』写在与 ComponentB 相关的组件中，这样 hook 触发组件更新时就不会影响到 ComponentA
 // 事实上，count 与 ComponentA 无关 
 // 原因如下：
 // 所以这也是 React 的数据更新和渲染没有 Vue 的 template 高效精准的原因之一
 /**
- * beginWork 函数中，在以下分支中 return 了，没有执行下面的 updateFunctionComponent，所以 ComponentA 函数不会再执行
+ * beginWork 函数中，在以下分支中 return 了，没有执行下面的 updateFunctionComponent，所以 ComponentA 函数不会再执行\
+ * 原因是：beginWork 中的判断
+ * 如果『读写分离』，则 oldProps === newProps && hasScheduledUpdateOrContext（主要是因为它），会执行 return attemptEarlyBailoutIfNoScheduledUpdate，不会执行后面的 updateFunctionComponent
+ * 否则会执行后面的 updateFunctionComponent
+ * 执行了 createWorkInProgress 函数，所以 workInProgress.pendingProps 永远不等于 workInProgress.memorizedProps， 因为 workInProgress.pendingProps = pendingProps 是外部传入的，及时 props 没有变化，其与原先的 memorizedProps 也不是同一个内存地址
 
  // Neither props nor legacy context changes. Check if there's a pending
  // update or context change.
@@ -164,8 +169,23 @@ function App () {
   </>
 }
 
+// function App () {
+//   const [count, setCount] = useState<number>(0)
+
+//   return <>
+//     <ComponentA></ComponentA>
+//     <ComponentB count={count}></ComponentB>
+//     <button onClick={() => {
+//       debugger
+//       setCount(count + 1)
+//     }}>Button</button>
+//   </>
+// }
+
 const root1: Root = createRoot(document.querySelector('#root1'))
 
 root1.render(<App />)
 
+// @ts-ignore
+window.root1 = root1
 console.log(root1)
