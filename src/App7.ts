@@ -32,7 +32,7 @@ const fiber: Fiber = {
 
 const Dispatcher = (function () {
   function useState<T>(initialState: T) {
-    let hook = null
+    let hook: Hook = null
 
     if (isMount) {
       hook = mountState()
@@ -47,6 +47,7 @@ const Dispatcher = (function () {
     if (hook.queue.pending) {
       let update: Update = hook.queue.pending.next
 
+      // 这就是执行多次 hook 的 dispatcher，只会取最后一次 set 的值的原因
       do {
         const action = update.action
         newState = typeof action === 'function' ? action(newState) : action
@@ -59,7 +60,8 @@ const Dispatcher = (function () {
     hook.memorizedState = newState
     // --- udpate end
 
-    return [hook.memorizedState, dispatchSetState.bind(null, hook.queue)]
+    // return [hook.memorizedState, dispatchSetState.bind(null, hook.queue)]
+    return [hook.memorizedState, (action: Action) => dispatchSetState(hook.queue, action)]
   }
 
   function mountState () {
@@ -97,6 +99,10 @@ const Dispatcher = (function () {
     if (queue.pending === null) {
       update.next = update
     } else {
+      // 多次执行 hook 的 dispatcher，即多次重复赋值，如：
+      // setStatus(0)
+      // setStatus(1)
+      // setStatus(2)
       update.next = queue.pending.next
       queue.pending.next = update
     }
@@ -113,6 +119,7 @@ const Dispatcher = (function () {
 
 
 function App () {
+  debugger
   const [count, setCount] = Dispatcher.useState<number>(100)
 
   const [random, setRandom] = Dispatcher.useState<number>(200)
@@ -120,6 +127,7 @@ function App () {
   console.log('count: ', count, 'random: ', random)
 
   const update = () => {
+    debugger
     setCount(count + 1)
     setRandom(Math.random())
   }
@@ -140,10 +148,11 @@ function render () {
 
   // batchedUpdate
   timer = setTimeout(() => {
-    debugger
+    // debugger
     window.app = fiber.stateNode()
     isMount = false
     workInProgressHook = fiber.memorizedState
+    console.log('workInProgressHook: ', workInProgressHook)
   })
 }
 
