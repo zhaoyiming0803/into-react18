@@ -14,7 +14,7 @@ fn 可以分为如下一个部分：
 - Renderer（渲染器）：将 Reconciler 中打好标签的节点渲染到视图上
 
 
-## 横向对比 Vue
+## 横向对比 [Vue](https://github.com/zhaoyiming0803/into-vue)
 
 - 理解不同框架背后思想
 - 思考如何写出易维护、高性能的组件
