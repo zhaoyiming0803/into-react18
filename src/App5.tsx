@@ -99,20 +99,31 @@ function App () {
 
   const onClickCount4 = () => {
     debugger
+    // flushSync 所谓的 sync，指的是 flushSync 执行完后，能立刻获取到 dom 中的最新值
+    // 如果不用 flushSync，则内存中和 dom 中的值都不是最新值，参考上面的 3 个 demo
     flushSync(() => {
       debugger
       setCount(count + 1)
       debugger
-      // 此时，页面中 button 的值已经被渲染为 1，但内存中的 count 仍然为 0
-      // // App10.tsx
       setCount(count + 100)
     })
     // 内存中的 count 不是最新值
     // dom 中的 count 是最新值
+    debugger
+    // flushSync -> flushSyncCallbacks -> workLoopSync -> performUnitOfWork 
+    // -> updateFunctionComponent -> renderWithHooks
+    // -> var children = Component(props, secondArg); 执行当前函数组件
+    // -> commitRoot
+    // 然后执行下面的 console.log
+    // 因为 flushSync 是手动调用的，相当于 React 内部使用 flushSync 的回调函数做了一层拦截，一个钩子函数
+    // 最后把执行权再次交给 onClickCount4 函数
+  
+    // 内存中的 count 是一个闭包值，访问的是更新前的旧值
+    // 因为函数的作用域是在定义时决定的，而不是执行时
     console.log('count in onClickCount4: ', count, document.querySelector('#box').innerHTML)
   }
 
-  return <button onClick={onClickCount1} id="box">{count}</button>
+  return <button onClick={onClickCount4} id="box">{count}</button>
 }
 
 const root1: Root = createRoot(document.querySelector('#root1'))
