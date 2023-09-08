@@ -13,6 +13,7 @@ function App () {
     // count 相当于局部变量
     // innerHTML 相当于全局变量
     // https://github.com/zhaoyiming0803/test-code/blob/master/test354.js
+    // 参考 App19.tsx
     setTimeout(() => {
       debugger
       console.log('count in setTimeout: ', count, document.querySelector('#box').innerHTML) // 0 1
