@@ -25,7 +25,28 @@ function App1 () {
   </>
 }
 
+let count = 0
+
 function App2 () {
+  useEffect(() => {
+    let timer = setInterval(() => {
+      // count 虽然会递增，但不是使用 hook 触发的，所以视图不会更新
+      // 与 App18.tsx 中的 useRef 是一个效果
+      console.log('count: ', count)
+      count += 1
+    }, 3000)
+    return () => {
+      clearInterval(timer)
+      timer = null
+    }
+  }, [])
+
+  return <>
+    <div>count: {count}</div>
+  </>
+}
+
+function App3 () {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
@@ -51,7 +72,7 @@ function App2 () {
   </>
 }
 
-function App3 () {
+function App4 () {
   const [count, setCount] = useState(0)
 
   const onClick = () => {
@@ -69,6 +90,42 @@ function App3 () {
   </>
 }
 
+function App5 () {
+  const [count, setCount] = useState<number>(0)
+  const [list, setList] = useState<string[]>([])
+
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setCount((count) => {
+        return (count + 1) % 4
+      })
+    }, 800)
+
+    return () => {
+      clearInterval(timer)
+      timer = null
+    }
+  }, [])
+
+  useEffect(() => {
+    setList(new Array(count).fill(''))
+  }, [count])
+
+  return <>
+    {list.map((item, index) => <span 
+      key={index} 
+      style={{
+        display: 'inline-block',
+        width: '2px',
+        height: '2px',
+        marginRight: '2px',
+        border: '1px solid #f00',
+        borderRadius: '50%'
+      }}>
+      </span>)}
+  </>
+}
+
 const root = createRoot(document.querySelector('#root1'))
 
-root.render(<App1 />)
+root.render(<App5 />)
