@@ -5,6 +5,12 @@ import { createRoot, Root } from 'react-dom/client'
 // https://github.com/zhaoyiming0803/test-code/blob/master/test350-event-react16.html
 // https://github.com/zhaoyiming0803/test-code/blob/master/test350-event-react18.html
 
+// Vue 处理 @click 事件则不是事件委托，而是直接绑定到 DOM
+// https://github.com/zhaoyiming0803/test-code/blob/master/test287.html
+
+// 原生事件处理
+// https://github.com/zhaoyiming0803/test-code/blob/master/test350-dom-events.html
+
 // 事件监听『全部绑定在 root1 上』，所以，原生事件和 React 事件都保持统一的调用顺序，先捕获再冒泡
 // 这与 App9.tsx 中的测试不同
 
