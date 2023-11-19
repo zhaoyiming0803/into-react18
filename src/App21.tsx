@@ -80,3 +80,9 @@ root.render(<App />)
 
 // 类似的：
 // https://github.com/zhaoyiming0803/test-code/blob/master/test374.js
+
+/**
+ * React 的 update
+ *  第一步：遍历 Fiber，执行 Scheduler 和 Reconciler 获取各个节点的 update
+ *  第二步：在 commitRoot 阶段同样需要遍历 Fiber，执行 DOM 的增删改
+ */

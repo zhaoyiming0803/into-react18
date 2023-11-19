@@ -43,7 +43,7 @@ console.log(root1)
 // reconcileChildren(current, workInProgress, nextChildren, renderLanes);
 // mountChildFibers 或 reconcileChildFibers 正式进入 reconciler 阶段
 
-// React 的 scheduler 和 reconciler 只发生在『有状态更新的组件』内，但是：
+// 参考 App21.tsx 的注释
 // React 在 commit 阶段要从 root 开始遍历整个链表，经过漫长的以下两个阶段，即使只是以上 demo 简单的一个状态更新
 // recursivelyTraverseMutationEffects
 // commitMutationEffectsOnFiber
