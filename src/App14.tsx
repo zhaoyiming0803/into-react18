@@ -135,7 +135,7 @@ function ComponentB (props: ComponentBProps) {
  * 原因是：beginWork 中的判断
  * 如果『读写分离』，则 oldProps === newProps && hasScheduledUpdateOrContext（主要是因为它），会执行 return attemptEarlyBailoutIfNoScheduledUpdate，不会执行后面的 updateFunctionComponent
  * 否则会执行后面的 updateFunctionComponent
- * 执行了 createWorkInProgress 函数，所以 workInProgress.pendingProps 永远不等于 workInProgress.memorizedProps， 因为 workInProgress.pendingProps = pendingProps 是外部传入的，及时 props 没有变化，其与原先的 memorizedProps 也不是同一个内存地址
+ * 执行了 createWorkInProgress 函数，所以 workInProgress.pendingProps 永远不等于 workInProgress.memorizedProps， 因为 workInProgress.pendingProps = pendingProps 是外部传入的，即使 props 没有变化，其与原先的 memorizedProps 也不是同一个内存地址
 
  // Neither props nor legacy context changes. Check if there's a pending
  // update or context change.
